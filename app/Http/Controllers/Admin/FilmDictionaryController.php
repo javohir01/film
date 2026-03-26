@@ -76,9 +76,7 @@ class FilmDictionaryController extends Controller
     public function edit($id)
     {
         $model = $this->repo->findById($id);
-        $client = new Client();
-        $response = $client->get(self::url);
-        $letters = json_decode($response->getBody()->getContents(), true);
+        $letters = $this->repo->letters();
         return view('admin.dictionary.edit', compact('model', 'letters'));
     }
 
