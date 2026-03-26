@@ -83,7 +83,7 @@
                                     <th>
                                         <select name="dictionary_id" id="" class="form-control" onchange="this.form.submit()">
                                             <option value="">----</option>
-                                            @foreach($letters['data'] as $letter)
+                                            @foreach($letters as $letter)
                                                 <option value="{{$letter['id']}}" {{$letter['id'] == request('dictionary_id')?'selected':''}}>{{$letter['name']}}</option>
                                             @endforeach
                                         </select>
@@ -108,7 +108,7 @@
                                     <td>{{$item->description_oz}}</td>
                                     <td>
                                         @foreach($item->film_dictionary_category as $result)
-                                            @foreach($letters['data'] as $letter)
+                                            @foreach($letters as $letter)
                                                 {{$result->dictionary_category_id == $letter['id']?$letter['name']:''}}
                                             @endforeach,
                                         @endforeach

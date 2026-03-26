@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class FilmDictionaryController extends Controller
 {
-    const url = 'https://kino-tahlil.uz/api/letters_category';
     public function __construct(protected FilmDictionaryRepository $repo, protected Request $request)
     {}
 
@@ -24,9 +23,7 @@ class FilmDictionaryController extends Controller
     public function index()
     {
         $models = $this->repo->index($this->request);
-        $client = new Client();
-        $response = $client->get(self::url);
-        $letters = json_decode($response->getBody()->getContents(), true);
+        $letters = $this->repo->letters();
         return view('admin.dictionary.index', compact('models', 'letters'));
     }
 
@@ -37,10 +34,7 @@ class FilmDictionaryController extends Controller
      */
     public function create()
     {
-
-        $client = new Client();
-        $response = $client->get(self::url);
-        $letters = json_decode($response->getBody()->getContents(), true);
+        $letters = $this->repo->letters();
         return view('admin.dictionary.create', compact('letters'));
     }
 

@@ -4,11 +4,13 @@
 namespace App\Repositories;
 
 
+use App\Models\Dictionary;
 use App\Models\FilmDictionary;
 use App\Models\FilmDictionaryCategory;
 use App\Models\TelegramUser;
 use App\Traits\ImageUploads;
 use App\Traits\TelegramMessage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Keyboard\Keyboard;
 
@@ -174,5 +176,23 @@ class FilmDictionaryRepository extends BaseRepository
             return true;
         }
         return false;
+    }
+
+    public function letters()
+    {
+        $data = Dictionary::select('id', 'name_oz as name')->orderBy('order', 'asc')->get();
+        $items = json_decode($data, true);
+        $arr = [];
+        $outLetter = ['Zh', 'Ya', 'Yu', 'Yo', 'Shch', "'", 'ʼ', 'Ts', 'Ь', 'Ы', 'Ъ', 'Щ'];
+        foreach ($items as $item) {
+            $arr[] = [
+                'id' => $item['id'],
+                'name' => json_decode($item['name'], true)['upper'],
+            ];
+        }
+        $filter = collect($arr)->unique('name')->reject(function ($item) use ($outLetter) {
+            return in_array($item['name'], $outLetter);
+        });
+        return $filter;
     }
 }

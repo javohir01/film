@@ -106,7 +106,7 @@
                                     </label>
                                     <select name="dictionary_id[]" id="dictionary" multiple="multiple"
                                             class="select2 form-control @error('dictionary_id[]') border-danger @enderror" data-placeholder="Lug'atni tanlang">
-                                        @foreach($letters['data'] as $letter)
+                                        @foreach($letters as $letter)
                                             <option
                                                 value="{{$letter['id']}}">{{$letter['name']}}</option>
                                         @endforeach
