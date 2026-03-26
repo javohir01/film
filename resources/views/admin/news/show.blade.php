@@ -37,28 +37,15 @@
             @endif
             <div class="card card-outline card-info">
                 <div class="card-header">
-                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill"
-                               href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home"
-                               aria-selected="true">O'Z</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
-                               href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile"
-                               aria-selected="false">UZ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-ru-tab" data-toggle="pill"
-                               href="#custom-tabs-three-ru" role="tab" aria-controls="custom-tabs-three-ru"
-                               aria-selected="false">RU</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-body-tab" data-toggle="pill"
-                               href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile"
-                               aria-selected="false">EN</a>
-                        </li>
-                    </ul>
+                    <form action="">
+                        <select name="translates" id="" onchange="this.form.submit()" class="form-control">
+                            <option value="">Til</option>
+                            <option value="oz" {{request('translates') == 'oz'?'selected': ''}}>O'Z</option>
+                            <option value="uz" {{request('translates') == 'uz'?'selected': ''}}>UZ</option>
+                            <option value="ru" {{request('translates') == 'ru'?'selected': ''}}>RU</option>
+                            <option value="en" {{request('translates') == 'en'?'selected': ''}}>EN</option>
+                        </select>
+                    </form>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-three-tabContent">
@@ -68,121 +55,28 @@
                                 <tbody>
                                     <tr>
                                         <th>Nomi</th>
-                                        <td>{{$model->name_oz}}</td>
+                                        <td>{{$model->translations->first()->name ?? ''}}</td>
                                     </tr>
                                     <tr>
                                         <th>Rasm</th>
-                                        <td><img src="{{getInFolder($model->image, 'news')}}" alt="error"></td>
+                                        <td><img src="{{getInFolder($model->image, 'news') ?? ''}}" alt="error"></td>
                                     </tr>
                                     <tr>
                                         <th>Qisqacha ma'lumot</th>
-                                        <td>{{$model->description_oz}}</td>
+                                        <td>{{$model->translations->first()->description ?? ''}}</td>
                                     </tr>
                                     <tr>
                                         <th>Qo'shilgan vaqti</th>
-                                        <td>{{$model->created_at->format('d-m-Y')}}</td>
+                                        <td>{{$model->created_at->format('d-m-Y') ?? ''}}</td>
                                     </tr>
                                     <tr>
                                         <th>Status</th>
-                                        <td>{{$model->status==1?'Active':'No Active'}}</td>
+                                        <td>{{$model->status==1?'Active':'No Active' ?? ''}}</td>
                                     </tr>
                                     <tr>
                                         <th>To'liq ma'lumot</th>
-                                        <td>{!! $model->content_oz !!}</td>
+                                        <td>{!! $model->translations->first()->content ?? '' !!}</td>
                                     </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        {{----- uz -----}}
-                        <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel">
-                            <table class="table table-bordered table-striped table-hover">
-                                <tbody>
-                                <tr>
-                                    <th>Номи</th>
-                                    <td>{{$model->name_uz}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Расм</th>
-                                    <td><img src="{{getInFolder($model->image, 'news')}}" alt="error"></td>
-                                </tr>
-                                <tr>
-                                    <th>Қисқача маълумот</th>
-                                    <td>{{$model->description_uz}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Қўшилган вақти</th>
-                                    <td>{{$model->created_at}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Статус</th>
-                                    <td>{{$model->status==1?'Active':'No Active'}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Тўлиқ маълумот</th>
-                                    <td> <?= $model->content_uz ?></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        {{----- ru -----}}
-                        <div class="tab-pane fade" id="custom-tabs-three-ru" role="tabpanel">
-                            <table class="table table-bordered table-striped table-hover">
-                                <tbody>
-                                <tr>
-                                    <th>Имя</th>
-                                    <td>{{$model->name_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Картина</th>
-                                    <td><img src="{{getInFolder($model->image, 'news')}}" alt="error"></td>
-                                </tr>
-                                <tr>
-                                    <th>Краткая информация</th>
-                                    <td>{{$model->description_ru}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Добавленное время</th>
-                                    <td>{{$model->created_at}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Статус</th>
-                                    <td>{{$model->status==1?'Active':'No Active'}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Полная информация</th>
-                                    <td> <?= $model->content_ru ?></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        {{----- en -----}}
-                        <div class="tab-pane fade" id="custom-tabs-three-en" role="tabpanel">
-                            <table class="table table-bordered table-striped table-hover">
-                                <tbody>
-                                <tr>
-                                    <th>Имя</th>
-                                    <td>{{$model->name_en}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Картина</th>
-                                    <td><img src="{{getInFolder($model->image, 'news')}}" alt="error"></td>
-                                </tr>
-                                <tr>
-                                    <th>Краткая информация</th>
-                                    <td>{{$model->description_en}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Добавленное время</th>
-                                    <td>{{$model->created_at}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Статус</th>
-                                    <td>{{$model->status==1?'Active':'No Active'}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Полная информация</th>
-                                    <td> <?= $model->content_en ?></td>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>

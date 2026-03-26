@@ -11,167 +11,110 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('news.index')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('news.index') }}">Home</a></li>
                         <li class="breadcrumb-item active">News</li>
                     </ol>
                 </div>
             </div>
         </div>
     </section>
+
     <section class="content">
         <div class="col-11 mr-auto ml-auto">
+
             @if(session()->has('error'))
                 <div class="alert alert-danger position-relative">
-                    {{session()->get('error')}}
+                    {{ session()->get('error') }}
                     <button class="btn btn-danger position-absolute cancel">&times;</button>
                 </div>
             @endif
-            <div class="card card-primary card-outline" >
-                <div class="card-header">
-                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill"
-                               href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home"
-                               aria-selected="true">O'Z</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
-                               href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile"
-                               aria-selected="false">UZ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-ru-tab" data-toggle="pill"
-                               href="#custom-tabs-three-ru" role="tab" aria-controls="custom-tabs-three-ru"
-                               aria-selected="false">RU</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" id="custom-tabs-three-en-tab" data-toggle="pill"
-                               href="#custom-tabs-three-en" role="tab" aria-controls="custom-tabs-three-en"
-                               aria-selected="false">EN</a>
-                        </li>
-                    </ul>
-                </div>
+
+            <div class="card card-primary card-outline">
                 <div class="card-body">
-                    <form action="{{route('news.store')}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="tab-content" id="custom-tabs-three-tabContent">
-                            {{----  oz  ----}}
-                            <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel">
-                                <div class="form-group">
-                                    <label>Yangiliklar kategoriyasi</label>
-                                    <select name="category_id" class="form-control @error('category_id') border-danger @enderror" id="category_id">
-                                        <option>----</option>
-                                        @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->name_oz}}</option>
-                                        @endforeach
-                                    </select>
-                                    <small class="text-danger">{{$errors->first('new_category_id')}}</small>
-                                </div>
 
-                                <div class="form-group">
-                                    <label>Nomi</label>
-                                    <input type="text" class="form-control @error('name_oz') border-danger @enderror" name="name_oz" placeholder="Nomi">
-                                    <small class="text-danger">{{$errors->first('name_oz')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Rasm</label>
-                                    <input type="file" class="form-control @error('images') border-danger @enderror" name="images" required accept="image/jpeg,png,jpg">
-                                    <small class="text-danger">{{$errors->first('images')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Qisqacha ma'lumot</label>
-                                    <textarea name="description_oz" cols="30" rows="5" class="form-control @error('description_oz') border-danger @enderror" placeholder="Qisqacha ma'lumot"></textarea>
-                                    <small class="text-danger">{{$errors->first('description_oz')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>To'liq ma'lumot</label>
-                                    <textarea name="content_oz" class="textarea form-control summernote @error('content_oz') border-danger @enderror" id="summernote" placeholder="To'liq ma'lumot"></textarea>
-                                    <small class="text-danger">{{$errors->first('content_oz')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Status</label>
-                                    <select name="status" class="form-control form-control-sm">
-                                        <option value="1" selected>Active</option>
-                                        <option value="0">No Active</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-check">
-                                    <label>
-                                        <input type="checkbox" class="form-check-input" name="telegram_status" value="true">
-                                        Telegramga Yuborish
-                                    </label>
-                                </div>
-
-                            </div>
-                            {{----  uz  ----}}
-                            <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel">
-                                <div class="form-group">
-                                    <label>Номи</label>
-                                    <input type="text" class="form-control @error('name_uz') border-danger @enderror" name="name_uz" placeholder="Номи">
-                                    <small class="text-danger">{{$errors->first('name_uz')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Қисқача маълумот</label>
-                                    <textarea name="description_uz" cols="30" rows="5" class="form-control @error('description_uz') border-danger @enderror" placeholder="Қисқача маълумот"></textarea>
-                                    <small class="text-danger">{{$errors->first('description_uz')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Тўлиқ маълумот</label>
-                                    <textarea name="content_uz" class="textarea form-control summernote @error('content_uz') border-danger @enderror" id="summernote" placeholder="Тўлиқ маълумот"></textarea>
-                                    <small class="text-danger">{{$errors->first('content_uz')}}</small>
-                                </div>
-                            </div>
-                            {{----  ru  ----}}
-                            <div class="tab-pane fade" id="custom-tabs-three-ru" role="tabpanel">
-                                <div class="form-group">
-                                    <label>Имя</label>
-                                    <input type="text" class="form-control @error('name_ru') border-danger @enderror" name="name_ru" placeholder="Имя">
-                                    <small class="text-danger">{{$errors->first('name_ru')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Краткая информация</label>
-                                    <textarea name="description_ru" cols="30" rows="5" class="form-control @error('description_ru') border-danger @enderror" placeholder="Краткая информация"></textarea>
-                                    <small class="text-danger">{{$errors->first('description_ru')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Полная информация</label>
-                                    <textarea name="content_ru" class="textarea form-control summernote @error('content_ru') border-danger @enderror" id="summernote" placeholder="Полная информация"></textarea>
-                                    <small class="text-danger">{{$errors->first('content_ru')}}</small>
-                                </div>
-                            </div>
-                            {{----  en  ----}}
-                            <div class="tab-pane fade" id="custom-tabs-three-en" role="tabpanel">
-                                <div class="form-group">
-                                    <label>Имя</label>
-                                    <input type="text" class="form-control @error('name_en') border-danger @enderror" name="name_en" placeholder="Имя">
-                                    <small class="text-danger">{{$errors->first('name_en')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Краткая информация</label>
-                                    <textarea name="description_en" cols="30" rows="5" class="form-control @error('description_en') border-danger @enderror" placeholder="Краткая информация"></textarea>
-                                    <small class="text-danger">{{$errors->first('description_en')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Полная информация</label>
-                                    <textarea name="content_en" class="textarea form-control summernote @error('content_en') border-danger @enderror" id="summernote" placeholder="Полная информация"></textarea>
-                                    <small class="text-danger">{{$errors->first('content_en')}}</small>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <button class="btn btn-success">&check;Saqlash</button>
-                            </div>
+                        {{-- ── Til tanlash (faqat shu qo'shildi) ── --}}
+                        <div class="form-group col-md-1 pl-0">
+                            <select name="locale" id="locale-select" class="form-control">
+                                <option value="oz" {{ old('locale') == 'oz' ? 'selected' : '' }}>O'Z</option>
+                                <option value="uz" {{ old('locale') == 'uz' ? 'selected' : '' }}>UZ</option>
+                                <option value="ru" {{ old('locale') == 'ru' ? 'selected' : '' }}>RU</option>
+                                <option value="en" {{ old('locale') == 'en' ? 'selected' : '' }}>EN</option>
+                            </select>
                         </div>
+
+                        <hr>
+
+                        {{-- ── Qolgan forma o'zgarmagan ── --}}
+                        <div class="form-group">
+                            <label for="category_id">Yangiliklar kategoriyasi</label>
+                            <select name="category_id" id="category_id"
+                                    class="form-control @error('category_id') border-danger @enderror">
+                                <option>----</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name_oz }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <small class="text-danger">{{ $errors->first('category_id') }}</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Nomi</label>
+                            <input type="text" name="name" id="name"
+                                   class="form-control @error('name') border-danger @enderror"
+                                   placeholder="Nomi" value="{{ old('name') }}">
+                            <small class="text-danger">{{ $errors->first('name') }}</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image">Rasm</label>
+                            <input type="file" name="images" id="image"
+                                   class="form-control @error('images') border-danger @enderror"
+                                   accept="image/jpeg,image/png,image/jpg">
+                            <small class="text-danger">{{ $errors->first('images') }}</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Qisqacha ma'lumot</label>
+                            <textarea name="description" rows="5" id="description"
+                                      class="form-control @error('description') border-danger @enderror"
+                                      placeholder="Qisqacha ma'lumot">{{ old('description') }}</textarea>
+                            <small class="text-danger">{{ $errors->first('description') }}</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content">To'liq ma'lumot</label>
+                            <textarea name="content"
+                                      class="textarea form-control summernote @error('content') border-danger @enderror"
+                                      id="summernote" placeholder="To'liq ma'lumot">{{ old('content') }}</textarea>
+                            <small class="text-danger">{{ $errors->first('content') }}</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select name="status" class="form-control form-control-sm" id="status">
+                                <option value="1" {{ old('status', 1) == 1 ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>No Active</option>
+                            </select>
+                        </div>
+
+                        <div class="form-check">
+                            <label for="telegram">
+                                <input type="checkbox" class="form-check-input" id="telegram"
+                                       name="telegram_status" value="true"
+                                    {{ old('telegram_status') ? 'checked' : '' }}>
+                                <span class="telegram-label">Telegramga Yuborish</span>
+                            </label>
+                        </div>
+
+                        <div class="text-right mt-3">
+                            <button class="btn btn-success">&check; Saqlash</button>
+                        </div>
+
                     </form>
                 </div>
             </div>
@@ -180,5 +123,69 @@
 @endsection
 
 @push('js')
+    <script>
+        const localeTexts = {
+            oz: {
+                name:        { label: "Nomi",               placeholder: "Nomi" },
+                description: { label: "Qisqacha ma'lumot",  placeholder: "Qisqacha ma'lumot" },
+                content:     { label: "To'liq ma'lumot",    placeholder: "To'liq ma'lumot" },
+                category:    { label: "Yangiliklar kategoriyasi" },
+                status:      { label: "Status" },
+                telegram:    { label: "Telegramga Yuborish" },
+                image:       { label: "Rasm" },
+            },
+            uz: {
+                name:        { label: "Номи",               placeholder: "Номи" },
+                description: { label: "Қисқача маълумот",   placeholder: "Қисқача маълумот" },
+                content:     { label: "Тўлиқ маълумот",     placeholder: "Тўлиқ маълумот" },
+                category:    { label: "Янгиликлар категорияси" },
+                status:      { label: "Статус" },
+                telegram:    { label: "Телеграмга Юбориш" },
+                image:       { label: "Расм" },
+            },
+            ru: {
+                name:        { label: "Имя",                placeholder: "Имя" },
+                description: { label: "Краткая информация", placeholder: "Краткая информация" },
+                content:     { label: "Полная информация",  placeholder: "Полная информация" },
+                category:    { label: "Категория новостей" },
+                status:      { label: "Статус" },
+                telegram:    { label: "Отправить в Telegram" },
+                image:       { label: "Изображение" },
+            },
+            en: {
+                name:        { label: "Name",                placeholder: "Имя" },
+                description: { label: "Description", placeholder: "Brief information" },
+                content:     { label: "Content",  placeholder: "Full information" },
+                category:    { label: "News category" },
+                status:      { label: "Status" },
+                telegram:    { label: "Send to Telegram" },
+                image:       { label: "Images" },
+            },
+        };
 
+        function updateForm(locale) {
+            const t = localeTexts[locale];
+
+            // Label va placeholder yangilash
+            document.querySelector('label[for="name"]').textContent           = t.name.label;
+            document.querySelector('input[name="name"]').placeholder          = t.name.placeholder;
+
+            document.querySelector('label[for="description"]').textContent    = t.description.label;
+            document.querySelector('textarea[name="description"]').placeholder = t.description.placeholder;
+
+            document.querySelector('label[for="content"]').textContent        = t.content.label;
+
+            document.querySelector('label[for="category_id"]').textContent    = t.category.label;
+            document.querySelector('label[for="status"]').textContent         = t.status.label;
+            document.querySelector('label[for="image"]').textContent          = t.image.label;
+            document.querySelector('.telegram-label').textContent             = t.telegram.label;
+        }
+
+        document.getElementById('locale-select').addEventListener('change', function () {
+            updateForm(this.value);
+        });
+
+        // Sahifa yuklanganda ham ishlaydi
+        updateForm(document.getElementById('locale-select').value);
+    </script>
 @endpush

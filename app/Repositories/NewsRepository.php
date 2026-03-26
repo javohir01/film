@@ -10,6 +10,7 @@ use App\Models\TelegramUser;
 use App\Traits\ImageUploads;
 use App\Traits\TelegramMessage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramResponseException;
 use Telegram\Bot\FileUpload\InputFile;
@@ -35,30 +36,46 @@ class NewsRepository extends BaseRepository
         return $filter->with('category')->orderBy('id', 'desc')->paginate($this->limit)->appends($request->query());
     }
 
-    public function findById($id)
+    public function findById($id, $translates = null)
     {
-        return $this->model->whereId($id)->first();
+        $model = $this->model->whereId($id)->first();
+        if (!empty($translates['translates'])) {
+            $lang = $translates['translates'];
+            $model->load(['translations' => function ($q) use ($lang){
+               $q->where('translate', $lang);
+            }]);
+        }else {
+            $model->load('translations');
+        }
+        if (count($model->translates) > 0) {
+            return [
+              'id' => $model->id,
+              'name' => $model->translations->name,
+              'description' => $model->translations->description,
+              'image' => $model->image,
+              'created_at' => $model->created_at,
+              'status' => $model->status,
+              ''
+            ];
+        }
+        return $model;
     }
 
     public function create($data)
     {
         $model = $this->model->create([
-            'name_oz' => $data['name_oz'],
-            'name_uz' => $data['name_uz'],
-            'name_ru' => $data['name_ru'],
-            'name_en' => $data['name_en'] ?? null,
-            'description_oz' => $data['description_oz'],
-            'description_uz' => $data['description_uz'],
-            'description_ru' => $data['description_ru'],
-            'description_en' => $data['description_en'] ?? null,
-            'content_oz' => contentByDomDocment($data['content_oz'], 'news'),
-            'content_uz' => contentByDomDocment($data['content_uz'], 'news'),
-            'content_ru' => contentByDomDocment($data['content_ru'], 'news'),
-            'content_en' => contentByDomDocment($data['content_en'], 'news'),
+            'slug' => Str::slug($data['name']),
+            'category_id' => $data['category_id'],
             'status' => $data['status'],
             'image' => $this->uploads($data['images'], 'news'),
-            'category_id' => $data['category_id'],
-            'telegram_status' => $data['telegram_status']
+            'telegram_status' => $data['telegram_status'] ?? false
+        ]);
+
+        $model->translations()->create([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'content' => contentByDomDocment($data['content'], 'news'),
+            'translate' => $data['locale'],
         ]);
 
         try {

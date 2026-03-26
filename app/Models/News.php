@@ -28,4 +28,9 @@ class News extends Model
          return $img;
     }
 
+    public function translations()
+    {
+        return $this->hasMany(NewTranslations::class, 'news_id');
+    }
+
 }

@@ -139,6 +139,7 @@
                             <th>Ko'rishlar soni</th>
                             <th>Status</th>
                             <th>Qo'shilgan vaqti</th>
+                            <th>Tarjimalar</th>
                             <th></th>
                         </tr>
                         <tr>
@@ -164,6 +165,15 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
+                                <th>
+                                    <select name="translates" id="" class="form-control" onchange="this.form.submit()">
+                                        <option value="">Til</option>
+                                        <option value="oz" {{ request('translates') == 'oz' ? 'selected' : '' }}>O'Z</option>
+                                        <option value="uz" {{ request('translates') == 'uz' ? 'selected' : '' }}>UZ</option>
+                                        <option value="ru" {{ request('translates') == 'ru' ? 'selected' : '' }}>RU</option>
+                                        <option value="en" {{ request('translates') == 'en' ? 'selected' : '' }}>EN</option>
+                                    </select>
+                                </th>
                             </form>
                         </tr>
                         </thead>
@@ -171,8 +181,16 @@
                         @forelse($models as $k => $model)
                             <tr>
                                 <td class="text-center">{{$k + 1}}</td>
-                                <td>{{$model->name_oz}}</td>
-                                <td>{{$model->description_oz}}</td>
+                                <td>
+                                    @foreach($model['translations'] as $translate)
+                                    {{$translate->name}}
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($model['translations'] as $translate)
+                                        {{$translate->description}}
+                                    @endforeach
+                                </td>
                                 <td>{{$model->category->name_oz}}</td>
                                 <td>{{$model->view_count}}</td>
                                 <td class="text-center">
@@ -186,6 +204,7 @@
                                     </label>
                                 </td>
                                 <td class="text-center">{{\Carbon\Carbon::parse($model->created_at)->format('d.m.Y')}}</td>
+                                <td></td>
                                 <td>
                                     <div class="project-actions">
                                         <a href="{{route('news.edit', $model->id)}}" class="btn btn-info mr-1"><i

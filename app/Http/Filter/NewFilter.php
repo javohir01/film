@@ -21,7 +21,10 @@ class NewFilter
     public function filter()
     {
         if (isset($this->request['name_oz']) && !empty($this->request['name_oz'])) {
-            $this->news = $this->news->where('name_oz', 'ilike', '%' . $this->request['name_oz'] . '%');
+            $name = $this->request['name_oz'];
+            $this->news = $this->news->whereHas('translations', function ($q) use ($name){
+                $q->where('name', 'ilike', '%'.$name.'%');
+            });
         }
 
         if (isset($this->request['description_oz']) && !empty($this->request['description_oz'])) {
@@ -31,7 +34,14 @@ class NewFilter
         if (isset($this->request['category_id']) && !empty($this->request['category_id'])) {
             $this->news = $this->news->where('category_id', $this->request['category_id']);
         }
-        return $this->news;
+        if (isset($this->request['translates']) && !empty($this->request['translates']))
+        {
+            $lang = $this->request['translates'];
+            $this->news = $this->news->whereHas('translations', function ($q) use ($lang){
+               $q->where('translate', $lang);
+            });
+        }
+        return $this->news->with('translations');
     }
 
 }
