@@ -55,27 +55,27 @@
                                 <tbody>
                                     <tr>
                                         <th>Nomi</th>
-                                        <td>{{$model->translations->first()->name ?? ''}}</td>
+                                        <td>{{(is_object($model) && $model->translations->first()) ? $model->translations->first()->name : ''}}</td>
                                     </tr>
                                     <tr>
                                         <th>Rasm</th>
-                                        <td><img src="{{getInFolder($model->image, 'news') ?? ''}}" alt="error"></td>
+                                        <td><img src="{{(count($model['translations']) > 0 && $model->image) ? getInFolder($model->image, 'news') : ''}}" alt="error"></td>
                                     </tr>
                                     <tr>
                                         <th>Qisqacha ma'lumot</th>
-                                        <td>{{$model->translations->first()->description ?? ''}}</td>
+                                        <td>{{(is_object($model) && $model->translations->first()) ? $model->translations->first()->description : ''}}</td>
                                     </tr>
                                     <tr>
                                         <th>Qo'shilgan vaqti</th>
-                                        <td>{{$model->created_at->format('d-m-Y') ?? ''}}</td>
+                                        <td>{{(count($model['translations']) > 0 && $model->created_at) ? $model->created_at->format('d-m-Y') : ''}}</td>
                                     </tr>
                                     <tr>
                                         <th>Status</th>
-                                        <td>{{$model->status==1?'Active':'No Active' ?? ''}}</td>
+                                        <td>{{(count($model['translations']) > 0 && $model->status) ? $model->status==1?'Active':'No Active' : ''}}</td>
                                     </tr>
                                     <tr>
                                         <th>To'liq ma'lumot</th>
-                                        <td>{!! $model->translations->first()->content ?? '' !!}</td>
+                                        <td>{!! (is_object($model) && $model->translations->first()) ? $model->translations->first()->content : '' !!}</td>
                                     </tr>
                                 </tbody>
                             </table>

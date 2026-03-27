@@ -39,25 +39,11 @@ class NewsRepository extends BaseRepository
     public function findById($id, $translates = null)
     {
         $model = $this->model->whereId($id)->first();
-        if (!empty($translates['translates'])) {
-            $lang = $translates['translates'];
-            $model->load(['translations' => function ($q) use ($lang){
-               $q->where('translate', $lang);
-            }]);
-        }else {
-            $model->load('translations');
-        }
-        if (count($model->translates) > 0) {
-            return [
-              'id' => $model->id,
-              'name' => $model->translations->name,
-              'description' => $model->translations->description,
-              'image' => $model->image,
-              'created_at' => $model->created_at,
-              'status' => $model->status,
-              ''
-            ];
-        }
+        $lang = $translates['translates'] ?? 'uz';
+        $model->load(['translations' => function($q) use ($lang) {
+            $q->where('translate', $lang);
+        }]);
+
         return $model;
     }
 
