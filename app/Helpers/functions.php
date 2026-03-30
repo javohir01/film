@@ -237,3 +237,55 @@ if (!function_exists('checkMessage'))
         }
     }
 }
+
+if (!function_exists('labels')) {
+    function labels($key) {
+        $lang = request('translates', 'oz');
+        $labels = [
+            'oz' => [
+                'name'        => 'Nomi',
+                'description' => "Qisqacha ma'lumot",
+                'content'     => "To'liq ma'lumot",
+                'category'    => 'Kategoriya',
+                'status'      => 'Status',
+                'image'       => 'Rasm',
+                'telegram'    => 'Telegramga Yuborish',
+                'save'        => 'Saqlash',
+                'date'        => 'Qo\'shilgan vaqti'
+            ],
+            'uz' => [
+                'name'        => 'Номи',
+                'description' => 'Қисқача маълумот',
+                'content'     => 'Тўлиқ маълумот',
+                'category'    => 'Категория',
+                'status'      => 'Статус',
+                'image'       => 'Расм',
+                'telegram'    => 'Телеграмга Юбориш',
+                'save'        => 'Сақлаш',
+                'date'        => 'Қўшилган вақти'
+            ],
+            'ru' => [
+                'name'        => 'Название',
+                'description' => 'Краткая информация',
+                'content'     => 'Полная информация',
+                'category'    => 'Категория',
+                'status'      => 'Статус',
+                'image'       => 'Изображение',
+                'telegram'    => 'Отправить в Telegram',
+                'save'        => 'Сохранить',
+                'date'        => 'Дополнительное время'
+            ],
+            'en' => [
+                'name'        => "Name",
+                'description' => "Description",
+                'content'     => "Content",
+                'category'    => "Category",
+                'status'      => "Status",
+                'telegram'    => "Send to Telegram",
+                'image'       => "Images",
+                'date'        => 'Added time'
+            ]
+        ];
+        return $labels[$lang][$key] ?? $key;
+    }
+}

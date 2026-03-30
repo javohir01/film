@@ -61,7 +61,7 @@ class NewsRepository extends BaseRepository
             'name' => $data['name'],
             'description' => $data['description'],
             'content' => contentByDomDocment($data['content'], 'news'),
-            'translate' => $data['locale'],
+            'translate' => $data['translates'],
         ]);
 
         try {

@@ -36,17 +36,6 @@
                 </div>
             @endif
             <div class="card card-outline card-info">
-                <div class="card-header">
-                    <form action="">
-                        <select name="translates" id="" onchange="this.form.submit()" class="form-control">
-                            <option value="">Til</option>
-                            <option value="oz" {{request('translates') == 'oz'?'selected': ''}}>O'Z</option>
-                            <option value="uz" {{request('translates') == 'uz'?'selected': ''}}>UZ</option>
-                            <option value="ru" {{request('translates') == 'ru'?'selected': ''}}>RU</option>
-                            <option value="en" {{request('translates') == 'en'?'selected': ''}}>EN</option>
-                        </select>
-                    </form>
-                </div>
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-three-tabContent">
                         {{----- oz -----}}
@@ -54,27 +43,27 @@
                             <table class="table table-bordered table-striped table-hover">
                                 <tbody>
                                     <tr>
-                                        <th>Nomi</th>
+                                        <th>{{labels('name')}}</th>
                                         <td>{{(is_object($model) && $model->translations->first()) ? $model->translations->first()->name : ''}}</td>
                                     </tr>
                                     <tr>
-                                        <th>Rasm</th>
+                                        <th>{{labels('image')}}</th>
                                         <td><img src="{{(count($model['translations']) > 0 && $model->image) ? getInFolder($model->image, 'news') : ''}}" alt="error"></td>
                                     </tr>
                                     <tr>
-                                        <th>Qisqacha ma'lumot</th>
+                                        <th>{{labels('description')}}</th>
                                         <td>{{(is_object($model) && $model->translations->first()) ? $model->translations->first()->description : ''}}</td>
                                     </tr>
                                     <tr>
-                                        <th>Qo'shilgan vaqti</th>
+                                        <th>{{labels('date')}}</th>
                                         <td>{{(count($model['translations']) > 0 && $model->created_at) ? $model->created_at->format('d-m-Y') : ''}}</td>
                                     </tr>
                                     <tr>
-                                        <th>Status</th>
+                                        <th>{{labels('status')}}</th>
                                         <td>{{(count($model['translations']) > 0 && $model->status) ? $model->status==1?'Active':'No Active' : ''}}</td>
                                     </tr>
                                     <tr>
-                                        <th>To'liq ma'lumot</th>
+                                        <th>{{labels('content')}}</th>
                                         <td>{!! (is_object($model) && $model->translations->first()) ? $model->translations->first()->content : '' !!}</td>
                                     </tr>
                                 </tbody>

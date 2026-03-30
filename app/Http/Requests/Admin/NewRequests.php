@@ -29,9 +29,9 @@ class NewRequests extends FormRequest
             'category_id' => 'required|integer',
             'status' => 'required|integer',
             'telegram_status' => 'nullable',
-            'locale' => 'required',
             'description' => 'required',
-            'content' => 'required'
+            'content' => 'required',
+            'translates' => 'required|in:oz,uz,ru,en'
         ];
     }
 }

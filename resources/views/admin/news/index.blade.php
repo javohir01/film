@@ -139,7 +139,6 @@
                             <th>Ko'rishlar soni</th>
                             <th>Status</th>
                             <th>Qo'shilgan vaqti</th>
-                            <th>Tarjimalar</th>
                             <th></th>
                         </tr>
                         <tr>
@@ -165,15 +164,7 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th>
-                                    <select name="translates" id="" class="form-control" onchange="this.form.submit()">
-                                        <option value="">Til</option>
-                                        <option value="oz" {{ request('translates') == 'oz' ? 'selected' : '' }}>O'Z</option>
-                                        <option value="uz" {{ request('translates') == 'uz' ? 'selected' : '' }}>UZ</option>
-                                        <option value="ru" {{ request('translates') == 'ru' ? 'selected' : '' }}>RU</option>
-                                        <option value="en" {{ request('translates') == 'en' ? 'selected' : '' }}>EN</option>
-                                    </select>
-                                </th>
+
                             </form>
                         </tr>
                         </thead>
@@ -204,7 +195,6 @@
                                     </label>
                                 </td>
                                 <td class="text-center">{{\Carbon\Carbon::parse($model->created_at)->format('d.m.Y')}}</td>
-                                <td></td>
                                 <td>
                                     <div class="project-actions">
                                         <a href="{{route('news.edit', $model->id)}}" class="btn btn-info mr-1"><i
