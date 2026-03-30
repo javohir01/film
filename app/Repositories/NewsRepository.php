@@ -36,14 +36,12 @@ class NewsRepository extends BaseRepository
         return $filter->with('category')->orderBy('id', 'desc')->paginate($this->limit)->appends($request->query());
     }
 
-    public function findById($id, $translates = null)
+    public function findById($id, $translates)
     {
         $model = $this->model->whereId($id)->first();
-        $lang = $translates['translates'] ?? 'uz';
-        $model->load(['translations' => function($q) use ($lang) {
-            $q->where('translate', $lang);
+        $model->load(['translations' => function($q) use ($translates) {
+            $q->where('translate', $translates);
         }]);
-
         return $model;
     }
 
@@ -100,6 +98,7 @@ class NewsRepository extends BaseRepository
 
     public function update($data, $id)
     {
+        dd($data);
         $model = $this->model->find($id);
         if (isset($data['images'])){
             deleteImages($model->images, 'news');
@@ -108,21 +107,17 @@ class NewsRepository extends BaseRepository
             $image = $model->image;
         }
         $model->update([
-            'name_oz' => $data['name_oz'],
-            'name_uz' => $data['name_uz'],
-            'name_ru' => $data['name_ru'],
-            'name_en' => $data['name_en'] ?? null,
-            'description_oz' => $data['description_oz'],
-            'description_uz' => $data['description_uz'],
-            'description_ru' => $data['description_ru'],
-            'description_en' => $data['description_en'] ?? null,
-            'content_oz' => contentByDomDocment($data['content_oz'], 'news'),
-            'content_uz' => contentByDomDocment($data['content_uz'], 'news'),
-            'content_ru' => contentByDomDocment($data['content_ru'], 'news'),
-            'content_en' => contentByDomDocment($data['content_en'], 'news'),
+            'slug' => $data['name'],
             'status' => $data['status'],
             'image' => $image,
             'category_id' => $data['category_id']
+        ]);
+
+        $model->updateOrCreate([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'content' => contentByDomDocment($data['content'], 'news'),
+            'translates' => $data['translates']
         ]);
 
         if ($model) {

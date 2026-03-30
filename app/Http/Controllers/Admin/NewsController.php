@@ -24,7 +24,9 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = PersonCategory::select('id', 'name_oz', 'name_uz', 'name_ru')->where('type', 'news')->where('status', true)->get();
+        $params = $request->all();
+        $lang = $params['translate'] ?? 'oz';
+        $categories = PersonCategory::select('id', 'name_'.$lang.' as name')->where('type', 'news')->where('status', true)->get();
         $models = $this->repo->index($request);
         return view('admin.news.index', compact('models', 'categories'));
     }
@@ -34,9 +36,11 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $categories = PersonCategory::select('id', 'name_oz', 'name_uz', 'name_ru')->where('type', 'news')->where('status', true)->get();
+        $params = $request->all();
+        $lang = $params['translate'] ?? 'oz';
+        $categories = PersonCategory::select('id', 'name_'.$lang.' as name')->where('type', 'news')->where('status', true)->get();
        return view('admin.news.create', compact('categories'));
     }
 
@@ -79,10 +83,12 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        $categories = PersonCategory::select('id', 'name_oz', 'name_uz')->where('type', 'news')->where('status', true)->get();
-        $model = $this->repo->findById($id);
+        $translates = $request->all();
+        $lang = $translates['translates'] ?? 'oz';
+        $categories = PersonCategory::select('id', 'name_'.$lang.' as name')->where('type', 'news')->where('status', true)->get();
+        $model = $this->repo->findById($id, $lang);
         return view('admin.news.edit', compact('model', 'categories'));
     }
 
