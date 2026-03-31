@@ -145,10 +145,11 @@
                             <form action="">
                                 <input type="hidden" name="from_filter" value="true">
                                 <button type="submit" class="d-none"></button>
+                                <input type="hidden" name="translates" value="{{request('translates', 'oz')}}">
                                 <th></th>
                                 <th class="w-25">
-                                    <input type="text" class="form-control" name="name_oz"
-                                           value="{{request('name_oz')}}" placeholder="Yangiliklar Nomi">
+                                    <input type="text" class="form-control" name="name"
+                                           value="{{request('name')}}" placeholder="Yangiliklar Nomi">
                                 </th>
                                 <th></th>
                                 <th>
@@ -156,7 +157,7 @@
                                         <option value="">----</option>
                                         @foreach($categories as $category)
                                             <option value="{{$category->id}}" {{request('category_id') == $category->id ?'selected':''}}>
-                                                {{$category->name_oz}}
+                                                {{$category->name}}
                                             </option>
                                         @endforeach
                                     </select>
@@ -182,7 +183,7 @@
                                         {{$translate->description}}
                                     @endforeach
                                 </td>
-                                <td>{{$model->category->name_oz}}</td>
+                                <td>{{$model->category->name }}</td>
                                 <td>{{$model->view_count}}</td>
                                 <td class="text-center">
                                     <label class="switch">

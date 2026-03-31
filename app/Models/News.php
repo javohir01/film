@@ -12,9 +12,16 @@ class News extends Model
     use GlobalSearch;
     protected $guarded = [];
 
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function category()
     {
-        return $this->belongsTo(PersonCategory::class);
+        $lang = request('translates', 'oz');
+        return $this->belongsTo(PersonCategory::class)->select('name_'.$lang.' as name','id');
     }
 
 

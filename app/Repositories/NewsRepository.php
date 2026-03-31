@@ -98,7 +98,6 @@ class NewsRepository extends BaseRepository
 
     public function update($data, $id)
     {
-        dd($data);
         $model = $this->model->find($id);
         if (isset($data['images'])){
             deleteImages($model->images, 'news');
@@ -107,18 +106,22 @@ class NewsRepository extends BaseRepository
             $image = $model->image;
         }
         $model->update([
-            'slug' => $data['name'],
+            'slug' => Str::slug($data['name']),
             'status' => $data['status'],
             'image' => $image,
             'category_id' => $data['category_id']
         ]);
 
-        $model->updateOrCreate([
-            'name' => $data['name'],
-            'description' => $data['description'],
-            'content' => contentByDomDocment($data['content'], 'news'),
-            'translates' => $data['translates']
-        ]);
+        $model->translations()->updateOrCreate(
+            [
+                'translate' => $data['translates']
+            ],
+            [
+                'name' => $data['name'],
+                'description' => $data['description'],
+                'content' => contentByDomDocment($data['content'], 'news'),
+            ]
+        );
 
         if ($model) {
             return $model;
@@ -134,6 +137,8 @@ class NewsRepository extends BaseRepository
         $model->delete();
         return true;
     }
+
+
 
 
 }

@@ -25,7 +25,7 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $params = $request->all();
-        $lang = $params['translate'] ?? 'oz';
+        $lang = $params['translates'] ?? 'oz';
         $categories = PersonCategory::select('id', 'name_'.$lang.' as name')->where('type', 'news')->where('status', true)->get();
         $models = $this->repo->index($request);
         return view('admin.news.index', compact('models', 'categories'));

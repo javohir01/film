@@ -24,14 +24,14 @@ class NewRequests extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'images' => 'nullable|image|mimes:png,jpeg,jpg|max:2048',
-            'category_id' => 'required|integer',
-            'status' => 'required|integer',
-            'telegram_status' => 'nullable',
-            'description' => 'required',
-            'content' => 'required',
-            'translates' => 'required|in:oz,uz,ru,en'
+            'name'              => 'required|string',
+            'category_id'       => 'required|integer',
+            'status'            => 'required|integer',
+            'description'       => 'required',
+            'content'           => 'required',
+            'translates'        => 'required|in:oz,uz,ru,en',
+            'images'            => 'nullable|image|mimes:png,jpeg,jpg|max:2048',
+            'telegram_status'   => 'nullable',
         ];
     }
 }

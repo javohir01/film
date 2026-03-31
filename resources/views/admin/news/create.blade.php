@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="translates" value="{{request('translates', 'uz')}}">
+                        <input type="hidden" name="translates" value="{{request('translates', 'oz')}}">
                         <div class="form-group">
                             <label>{{ labels('category') }}</label>
                             <select name="category_id"

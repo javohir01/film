@@ -37,6 +37,7 @@
                     <form action="{{route('news.update', $model->id)}}" method="post" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
+                        <input type="hidden" name="translates" value="{{request('translates', 'oz')}}">
                         <div class="tab-content" id="custom-tabs-three-tabContent">
                             <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel">
                                 <div class="form-group">
