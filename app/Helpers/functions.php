@@ -251,7 +251,10 @@ if (!function_exists('labels')) {
                 'image'       => 'Rasm',
                 'telegram'    => 'Telegramga Yuborish',
                 'save'        => 'Saqlash',
-                'date'        => 'Qo\'shilgan vaqti'
+                'date'        => 'Qo\'shilgan vaqti',
+                'f.i.o'       => 'F.I.O',
+                'calendar'    => 'Taqvim',
+                'order'       => 'Joylavush',
             ],
             'uz' => [
                 'name'        => 'Номи',
@@ -262,7 +265,10 @@ if (!function_exists('labels')) {
                 'image'       => 'Расм',
                 'telegram'    => 'Телеграмга Юбориш',
                 'save'        => 'Сақлаш',
-                'date'        => 'Қўшилган вақти'
+                'date'        => 'Қўшилган вақти',
+                'f.i.o'       => 'Ф.И.О',
+                'calendar'    => 'Тақвим',
+                'order'       => 'Жойлавуш',
             ],
             'ru' => [
                 'name'        => 'Название',
@@ -273,7 +279,10 @@ if (!function_exists('labels')) {
                 'image'       => 'Изображение',
                 'telegram'    => 'Отправить в Telegram',
                 'save'        => 'Сохранить',
-                'date'        => 'Дополнительное время'
+                'date'        => 'Дополнительное время',
+                'f.i.o'       => 'Ф.И.О',
+                'calendar'    => 'Календарь',
+                'order'       => 'Сортировка'
             ],
             'en' => [
                 'name'        => "Name",
@@ -283,7 +292,11 @@ if (!function_exists('labels')) {
                 'status'      => "Status",
                 'telegram'    => "Send to Telegram",
                 'image'       => "Images",
-                'date'        => 'Added time'
+                'date'        => 'Added time',
+                'f.i.o'       => 'F.I.O',
+                'calendar'    => 'Calendar',
+                'order'       => 'Order',
+
             ]
         ];
         return $labels[$lang][$key] ?? $key;

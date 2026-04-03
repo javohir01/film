@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AphorismRequest;
+use App\Models\Aphorism;
 use App\Models\Calendar;
 use App\Repositories\AphorismRepository;
 use Illuminate\Http\Request;
@@ -30,7 +31,9 @@ class AphorismController extends Controller
      */
     public function create()
     {
-        return view('admin.aphorism.create');
+        $model = Aphorism::query()->max('order');
+        $order = $model + 1;
+        return view('admin.aphorism.create', compact('order'));
     }
 
     /**
@@ -68,11 +71,12 @@ class AphorismController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        $model = $this->repo->findById($id);
-        $calendars = Calendar::where('aphorism_id', $model->id)->get();
-        return view('admin.aphorism.edit', compact('model', 'calendars'));
+        $translates = $request->all();
+        $lang = $translates['translates']??'oz';
+        $model = $this->repo->findById($id, $lang);
+        return view('admin.aphorism.edit', compact('model'));
     }
 
     /**

@@ -25,37 +25,23 @@ class AphorismRequest extends FormRequest
     {
         if ($this->isMethod('post')) {
             return [
-                'full_name_oz' => 'required|string',
-                'full_name_uz' => 'required|string',
-                'full_name_ru' => 'required|string',
-                'full_name_en' => 'nullable|string',
-                'description_oz' => 'required',
-                'description_uz' => 'required',
-                'description_ru' => 'required',
-                'description_en' => 'nullable',
-                'calendar.*.description_oz' => 'required',
-                'calendar.*.description_uz' => 'required',
-                'calendar.*.description_ru' => 'required',
-                'calendar.*.description_en' => 'nullable',
+                'full_name' => 'required|string',
+                'description' => 'required',
+                'calendar.*' => 'required',
                 'status' => 'required|integer',
-                'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+                'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+                'translates' => 'required|in:oz,uz,ru,en',
+                'order' => 'required',
             ];
         }else {
             return [
-                'full_name_oz' => 'required|string',
-                'full_name_uz' => 'required|string',
-                'full_name_ru' => 'required|string',
-                'full_name_en' => 'nullable|string',
-                'description_oz' => 'required',
-                'description_uz' => 'required',
-                'description_ru' => 'required',
-                'description_en' => 'nullable',
-                'calendar.*.description_oz' => 'required',
-                'calendar.*.description_uz' => 'required',
-                'calendar.*.description_ru' => 'required',
-                'calendar.*.description_en' => 'nullable',
+                'full_name' => 'required|string',
+                'description' => 'required',
+                'calendar.*' => 'required',
                 'status' => 'required|integer',
-                'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048'
+                'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+                'translates' => 'required|in:oz,uz,ru,en',
+                'order' => 'required',
             ];
         }
     }
@@ -63,16 +49,10 @@ class AphorismRequest extends FormRequest
     public function messages()
     {
         return [
-            'calendar.*.description_oz.required' => 'The form oz field is required',
-            'calendar.*.description_uz.required' => 'The form uz field is required',
-            'calendar.*.description_ur.required' => 'The form uz field is required',
+            'calendar.*.required' => 'Taqvim maydoni to\'lidirish tablab etiladi',
             'image.required' => 'Rasm maydoni to\'ldirish talab qilinadi',
-            'full_name_oz' => 'F.I.O maydoni to\'ldirish talab qilinadi',
-            'full_name_uz' => 'Ф.И.О майдони тўлдириш талаб қилинади',
-            'full_name_ru' => 'Поле «Полное имя» обязательно для заполнения.',
-            'description_oz' => 'Qisqacha ma\'lumot maydoni to\'ldirish talab qilinadi',
-            'description_uz' => 'Қисқача маълумот майдони тўлдириш талаб қилинади',
-            'description_ru' => 'Обязательно заполните краткое информационное поле.',
+            'full_name' => 'F.I.O maydoni to\'ldirish talab qilinadi',
+            'description' => 'Qisqacha ma\'lumot maydoni to\'ldirish talab qilinadi',
         ];
     }
 }

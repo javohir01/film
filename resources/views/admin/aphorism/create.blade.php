@@ -9,259 +9,104 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('aphorism.index')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('aphorism.index') }}">Home</a></li>
                         <li class="breadcrumb-item active">Aphorism</li>
                     </ol>
                 </div>
             </div>
         </div>
     </section>
+
     <section class="content">
         <div class="col-11 mr-auto ml-auto">
+
             @if(session()->has('error'))
                 <div class="alert alert-danger" id="close">
-                    {{session()->get('error')}}
+                    {{ session()->get('error') }}
                     <p class="cancel mb-0">&times;</p>
                 </div>
             @endif
+
             <div class="card card-info card-outline">
-                <div class="card-header">
-                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill"
-                               href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home"
-                               aria-selected="true">O'Z
-                                @if($errors->any())
-                                    @foreach($errors->all() as $error)
-                                        @if(str_contains($error,'oz'))
-                                            <div class="line"></div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
-                               href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile"
-                               aria-selected="false">UZ
-                                @if($errors->any())
-                                    @foreach($errors->all() as $error)
-                                        @if(str_contains($error,'uz'))
-                                            <div class="line"></div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-ru-tab" data-toggle="pill"
-                               href="#custom-tabs-three-ru" role="tab" aria-controls="custom-tabs-three-ru"
-                               aria-selected="false">RU
-                                @if($errors->any())
-                                    @foreach($errors->all() as $error)
-                                        @if(str_contains($error,'ru'))
-                                            <div class="line"></div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-en-tab" data-toggle="pill"
-                               href="#custom-tabs-three-en" role="tab" aria-controls="custom-tabs-three-en"
-                               aria-selected="false">EN
-                                @if($errors->any())
-                                    @foreach($errors->all() as $error)
-                                        @if(str_contains($error,'en'))
-                                            <div class="line"></div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </a>
-                        </li>
-                    </ul>
-                </div>
                 <div class="card-body">
-                    <form action="{{route('aphorism.store')}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('aphorism.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="tab-content " id="custom-tabs-three-tabContent">
-                            {{------ oz ------}}
-                            <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel">
+                        <input type="hidden" name="translates" value="{{request('translates', 'oz')}}">
+                        <div class="form-group">
+                            <label>{{labels('f.i.o')}}</label>
+                            <input type="text" name="full_name"
+                                   class="form-control @error('full_name') border-danger @enderror"
+                                   value="{{ old('full_name') }}"
+                                   placeholder="{{labels('f.i.o')}}">
+                            <small class="text-danger">{{ $errors->first('full_name') }}</small>
+                        </div>
 
-                                <div class="form-group">
-                                    <label>F.I.O</label>
-                                    <input type="text" class="form-control  @error('full_name_oz') border-danger @enderror" name="full_name_oz">
-                                    <small class="text-danger">{{$errors->first('full_name_oz')}}</small>
-                                </div>
+                        <div class="form-group">
+                            <label>{{labels('image')}}</label>
+                            <input type="file" name="image"
+                                   class="form-control @error('image') border-danger @enderror"
+                                   accept="image/jpeg,image/jpg,image/png,image/gif">
+                            <small class="text-danger">{{ $errors->first('image') }}</small>
+                        </div>
 
-                                <div class="form-group">
-                                    <label>Rasm</label>
-                                    <input type="file" class="form-control @error('image') border-danger @enderror" name="image"
-                                           accept="image/jpeg, image/jpg, image/png, image/gif">
-                                    <small class="text-danger">{{$errors->first('image')}}</small>
-                                </div>
+                        <div class="form-group">
+                            <label>{{labels('description')}}</label>
+                            <textarea name="description" rows="5"
+                                      class="form-control @error('description') border-danger @enderror"
+                                      placeholder="{{labels('description')}}">{{ old('description') }}</textarea>
+                            <small class="text-danger">{{ $errors->first('description') }}</small>
+                        </div>
 
-
-                                <div class="form-group">
-                                    <label>Qisqacha ma'lumot</label>
-                                    <textarea name="description_oz" cols="30" rows="5" class="form-control  @error('description_oz') border-danger @enderror"></textarea>
-                                    <small class="text-danger">{{$errors->first('description_oz')}}</small>
-                                </div>
-
-                                <div class="card card-outline card-success">
-                                    <div class="card-header">
-                                        <label>Taqvim</label>
-                                    </div>
-                                    <div class="card-body">
-                                        <div id="dynamic-forms_oz">
-                                            <div class="card">
-                                                <div class="card-header"></div>
-                                                <div class="card-body">
-                                                    <div class="form-group dynamic-form">
-                                                        <label for="description_oz">Forma</label>
-                                                        <textarea name="calendar[0][description_oz]" id="description_oz" class="form-control @error('calendar[0][description_oz]') border-danger @enderror"
-                                                                  placeholder="Enter description"></textarea>
-                                                        <small class="text-danger">{{$errors->first('calendar[0][description_oz]')}}</small>
-                                                        <!-- Button to Add More Forms -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button type="button" class="btn btn-primary mt-3 btn-block ml-auto" id="add-form-btn_oz" style="width: 9%">Qo'shish</button>
-                                            <!-- First Form -->
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="1" selected >Active</option>
-                                        <option value="2">No Active</option>
-                                    </select>
-                                    <small class="text-danger">{{$errors->first('status')}}</small>
-                                </div>
+                        {{-- ── Taqvim ── --}}
+                        <div class="card card-outline card-success">
+                            <div class="card-header">
+                                <label>{{labels('calendar')}}</label>
                             </div>
-                            {{----- uz -----}}
-                            <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel">
-                                <div class="form-group">
-                                    <label>Ф.И.О</label>
-                                    <input type="text" class="form-control @error('full_name_uz') border-danger @enderror" name="full_name_uz">
-                                    <small class="text-danger">{{$errors->first('full_name_uz')}}</small>
-                                </div>
+                            <div class="card-body">
+                                <div id="dynamic-forms">
 
-                                <div class="form-group">
-                                    <label>Қисқача маълумот</label>
-                                    <textarea name="description_uz" cols="30" rows="5" class="form-control @error('description_uz') border-danger @enderror"></textarea>
-                                    <small class="text-danger">{{$errors->first('description_uz')}}</small>
-                                </div>
-
-                                <div class="card card-outline card-success">
-                                    <div class="card-header">
-                                        <label>Тақвим</label>
-                                    </div>
-                                    <div class="card-body">
-                                        <div id="dynamic-forms_uz">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    Форма
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="form-group dynamic-form">
-                                                        <label for="description_uz">Форма</label>
-                                                        <textarea name="calendar[0][description_uz]" id="description_uz" class="form-control @error('calendar[0][description_uz]') border-danger @enderror" placeholder="Enter description"></textarea>
-                                                        <small class="text-danger">{{$errors->first('description_uz')}}</small>
-                                                        <!-- Button to Add More Forms -->
-                                                    </div>
-                                                </div>
+                                    {{-- Birinchi forma --}}
+                                    <div class="dynamic-form">
+                                        <div class="card mb-2">
+                                            <div class="card-header">
+                                                <label>1</label>
                                             </div>
-                                            <button type="button" class="btn btn-primary mt-3 btn-block ml-auto" id="add-form-btn_uz" style="width: 9%">Қўшиш</button>
-                                            <!-- First Form -->
+                                            <div class="card-body">
+                                                <textarea name="calendar[0]"
+                                                          class="form-control @error('calendar.0') border-danger @enderror"
+                                                          placeholder="{{labels('calendar')}}">{{ old('calendar.0') }}</textarea>
+                                                <small class="text-danger">{{ $errors->first('calendar.0') }}</small>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            {{----- ru -----}}
-                            <div class="tab-pane fade" id="custom-tabs-three-ru" role="tabpanel">
-                                <div class="form-group">
-                                    <label>Ф.И.О</label>
-                                    <input type="text" class="form-control @error('full_name_ru') border-danger @enderror" name="full_name_ru">
-                                    <small class="text-danger">{{$errors->first('full_name_ru')}}</small>
-                                </div>
 
-                                <div class="form-group">
-                                    <label>Краткая информация</label>
-                                    <textarea name="description_ru" cols="30" rows="5" class="form-control @error('description_ru') border-danger @enderror"></textarea>
-                                    <small class="text-danger">{{$errors->first('description_ru')}}</small>
-                                </div>
+                                    <button type="button" class="btn btn-primary mt-3 float-right" id="add-form-btn">
+                                        + Qo'shish
+                                    </button>
 
-                                <div class="card card-outline card-success">
-                                    <div class="card-header">
-                                        <label>Календарь</label>
-                                    </div>
-                                    <div class="card-body">
-                                        <div id="dynamic-forms_ru">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    Форма
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="form-group dynamic-form">
-                                                        <label for="description_ru">Форма</label>
-                                                        <textarea name="calendar[0][description_ru]" id="description_ru" class="form-control @error('calendar[0][description_ru]') border-danger @enderror" placeholder="Enter description"></textarea>
-                                                        <small class="text-danger">{{$errors->first('description_ru')}}</small>
-                                                        <!-- Button to Add More Forms -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button type="button" class="btn btn-primary mt-3 btn-block ml-auto" id="add-form-btn_ru" style="width: 9%">добавить</button>
-                                            <!-- First Form -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{----- en -----}}
-                            <div class="tab-pane fade" id="custom-tabs-three-en" role="tabpanel">
-                                <div class="form-group">
-                                    <label>Ф.И.О</label>
-                                    <input type="text" class="form-control @error('full_name_en') border-danger @enderror" name="full_name_en">
-                                    <small class="text-danger">{{$errors->first('full_name_en')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Краткая информация</label>
-                                    <textarea name="description_en" cols="30" rows="5" class="form-control @error('description_en') border-danger @enderror"></textarea>
-                                    <small class="text-danger">{{$errors->first('description_en')}}</small>
-                                </div>
-
-                                <div class="card card-outline card-success">
-                                    <div class="card-header">
-                                        <label>Календарь</label>
-                                    </div>
-                                    <div class="card-body">
-                                        <div id="dynamic-forms_ru">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    Форма
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="form-group dynamic-form">
-                                                        <label for="description_en">Форма</label>
-                                                        <textarea name="calendar[0][description_en]" id="description_en" class="form-control @error('calendar[0][description_en]') border-danger @enderror" placeholder="Enter description"></textarea>
-                                                        <small class="text-danger">{{$errors->first('description_en')}}</small>
-                                                        <!-- Button to Add More Forms -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button type="button" class="btn btn-primary mt-3 btn-block ml-auto" id="add-form-btn_en" style="width: 9%">Add</button>
-                                            <!-- First Form -->
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <button class="btn btn-success">&check;Saqlash</button>
+
+                        <div class="form-group">
+                            <label>{{labels('status')}}</label>
+                            <select name="status" class="form-control">
+                                <option value="1" selected>Active</option>
+                                <option value="2">No Active</option>
+                            </select>
+                            <small class="text-danger">{{ $errors->first('status') }}</small>
                         </div>
+
+                        <div class="form-group">
+                            <label>{{labels('order')}}</label>
+                            <input type="text" name="order" class="form-control" value="{{$order}}">
+                        </div>
+
+                        <br>
+                        <div class="text-right mt-3">
+                            <button class="btn btn-success">&check; Saqlash</button>
+                        </div>
+
                     </form>
                 </div>
             </div>
@@ -270,84 +115,61 @@
 @endsection
 
 @push('js')
+    <script>
+        let formIndex = 1;
 
-<script>
-        let formIndexes = { oz: 1, uz: 1, ru: 1 }; // Track form indexes for both sections
-        function addForm(section) {
-            const dynamicForms = document.getElementById(`dynamic-forms_${section}`);
-            let formIndex = formIndexes[section];
-            // Create a new form group
+        function addForm() {
+            const dynamicForms = document.getElementById('dynamic-forms');
+            const addFormButton = document.getElementById('add-form-btn');
+
             const newForm = document.createElement('div');
-            newForm.classList.add('form-group', 'dynamic-form', 'mt-3');
+            newForm.classList.add('dynamic-form');
             newForm.innerHTML = `
-                <div class="card">
-                            <div class="card-header">
-                                <label>${formIndex}</label>
-                                <button type="button" class="remove-form-btn btn btn-danger float-right"><i class="fas fa-trash"></i></button>
-                            </div>
-                            <div class="card-body">
-                                <label>Forma ${formIndex}</label>
-                                <textarea name="calendar[${formIndex}][description_${section}]" class="form-control" placeholder="Enter description"></textarea>
-                            </div>
+            <div class="card mb-2">
+                <div class="card-header">
+                    <label>${formIndex + 1}</label>
+                    <button type="button" class="remove-form-btn btn btn-danger btn-sm float-right">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
+                <div class="card-body">
+                    <textarea name="calendar[${formIndex}]"
+                              class="form-control"
+                              placeholder="Tavsif kiriting"></textarea>
+                </div>
+            </div>
         `;
 
-            // Append the new form group before the add button
-            const addFormButton = document.getElementById(`add-form-btn_${section}`);
-            addFormButton.parentNode.insertBefore(newForm, addFormButton);
-
-            // Increment form index
-            formIndexes[section]++;
+            dynamicForms.insertBefore(newForm, addFormButton);
+            formIndex++;
         }
 
-        function reindexForms(section) {
-            const forms = document.querySelectorAll(`#dynamic-forms_${section} .dynamic-form`);
+        function reindexForms() {
+            const forms = document.querySelectorAll('#dynamic-forms .dynamic-form');
             forms.forEach((form, index) => {
-                // Update the `name` attributes for each input and textarea
-                const descriptionTextarea = form.querySelector(`textarea[name^="calendar"]`);
-                if (descriptionTextarea) {
-                    descriptionTextarea.setAttribute('name', `calendar[${index + 1}][description_${section}]`);
+                const textarea = form.querySelector('textarea');
+                if (textarea) {
+                    textarea.setAttribute('name', `calendar[${index}]`);
                 }
-
-                // Update label text
-                const label = form.querySelector('label');
+                const label = form.querySelector('.card-header label');
                 if (label) {
-                    label.textContent = `Form ${index + 1}`;
+                    label.textContent = index + 1;
                 }
             });
-
-            // Update the form index tracker
-            formIndexes[section] = forms.length + 1;
+            formIndex = forms.length;
         }
 
-        function check(section) {
-            let isValid = true;
-            $(`#dynamic-forms_${section} .dynamic-form`).each(function (){
-               let textarea = $(this).find('textarea');
-               // let add = document.getElementsByName(`calendar[${index + 1}][description_${section}]`);
-               if (textarea.val().trim() === '') {
-                    textarea.addClass('border-danger');
-                    isValid = false;
-               }
-            });
-        }
+        document.getElementById('add-form-btn').addEventListener('click', addForm);
 
-        // Add event listeners for adding forms
-        ['oz', 'uz'].forEach((section) => {
-            document.getElementById(`add-form-btn_${section}`).addEventListener('click', () => addForm(section));
-            document.getElementById(`add-form-btn_${section}`).addEventListener('click', () => check(section));
-
-            // Delegate click event for remove buttons
-            document.getElementById(`dynamic-forms_${section}`).addEventListener('click', (e) => {
-                if (e.target.classList.contains('remove-form-btn')) {
-                    const formGroup = e.target.closest('.dynamic-form')
-                    if (formGroup){
-                        formGroup.remove()
-                        reindexForms(section); // Reindex forms after one is removed
-                    }
+        document.getElementById('dynamic-forms').addEventListener('click', function (e) {
+            const removeBtn = e.target.closest('.remove-form-btn');
+            if (removeBtn) {
+                const formGroup = removeBtn.closest('.dynamic-form');
+                if (formGroup) {
+                    formGroup.remove();
+                    reindexForms();
                 }
-            });
+            }
         });
-
-</script>
+    </script>
 @endpush

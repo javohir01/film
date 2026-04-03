@@ -16,4 +16,9 @@ class Aphorism extends Model
     {
         return $this->hasMany(Calendar::class, 'aphorism_id', 'id');
     }
+
+    public function translations()
+    {
+        return $this->hasMany(AphorismTranslations::class, 'aphorism_id');
+    }
 }

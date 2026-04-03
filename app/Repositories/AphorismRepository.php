@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Models\Aphorism;
 use App\Models\Calendar;
 use App\Traits\ImageUploads;
+use Illuminate\Support\Str;
 
 class AphorismRepository extends BaseRepository
 {
@@ -18,99 +19,84 @@ class AphorismRepository extends BaseRepository
 
     public function index($request)
     {
-        if (isset($request->full_name_oz) && !empty($request->full_name_oz))
+        $lang = $request['translates'] ?? 'oz';
+        if (isset($request->full_name) && !empty($request->full_name))
         {
-            $this->model = $this->model->where('full_name_oz', 'like', '%'.$request->full_name_oz.'%');
+            $full_name = $request->full_name;
+            $this->model = $this->model->whereHas('translations', function ($q) use ($full_name){
+                $q->where('full_name', 'ilike', '%'.$full_name.'%');
+            });
         }
         if (isset($request->status) && !empty($request->status)) {
             $this->model = $this->model->where('status', $request->status);
         }
-        return $this->model->with('calendar')->orderBy('id', 'desc')->paginate($this->limit)->appends($request->query());
+        $this->model = $this->model->whereHas('translations', function ($q) use ($lang){
+           $q->where('translates', $lang);
+        });
+        return $this->model->with('translations')->orderBy('id', 'desc')->paginate($this->limit);
     }
 
-    public function findById($id)
+    public function findById($id, $request)
     {
-        return $this->model->find($id);
+        $model = $this->model->whereId($id)->first();
+        $model->load(['translations' => function ($q) use ($request){
+           $q->where('translates', $request);
+        }]);
+        return $model;
     }
 
     public function create($data)
     {
         $model = $this->model->create([
-            'full_name_oz' => $data['full_name_oz'],
-            'full_name_uz' => $data['full_name_uz'],
-            'full_name_ru' => $data['full_name_ru'],
-            'full_name_en' => $data['full_name_en']??null,
-            'description_oz' => $data['description_oz'],
-            'description_uz' => $data['description_uz'],
-            'description_ru' => $data['description_ru'],
-            'description_en' => $data['description_en']??null,
+            'slug' => Str::slug($data['full_name']),
             'images' => $this->uploads($data['image'], 'aphorism'),
-            'status' => $data['status']
+            'status' => $data['status'],
+            'order' => $data['order']
         ]);
-        foreach ($data['calendar'] as $datum)
-        {
-            Calendar::create([
-                'aphorism_id' => $model->id,
-                'description_oz' => $datum['description_oz']??null,
-                'description_uz' => $datum['description_uz']??null,
-                'description_ru' => $datum['description_ru']??null,
-                'description_en' => $datum['description_en']??null,
-            ]);
-        }
+        $model->translations()->create([
+            'full_name' => $data['full_name'],
+            'description' => $data['description'],
+            'translates' => $data['translates'],
+            'calendar' => $data['calendar'],
+        ]);
         return $model;
     }
 
     public function update($data, $id)
     {
-        $model = $this->findById($id);
+        $model = $this->model->whereId($id)->first();
         if (isset($data['image']) && !empty($data['image'])) {
             if ($model->images) {
                 deleteImages($model->images, 'aphorism');
             }
-            $images = $this->uploads($data['image'], 'aphorism');
+            $images = $this->uploads($data['image'], 'aphorism' );
         }else {
             $images = $model->images;
         }
+
         $model->update([
-            'full_name_oz' => $data['full_name_oz'],
-            'full_name_uz' => $data['full_name_uz'],
-            'full_name_ru' => $data['full_name_ru'],
-            'full_name_en' => $data['full_name_en'],
-            'description_oz' => $data['description_oz'],
-            'description_uz' => $data['description_uz'],
-            'description_ru' => $data['description_ru'],
-            'description_en' => $data['description_en'],
+            'slug' => $data['full_name'],
             'images' => $images,
-            'status' => $data['status']
+            'status' => $data['status'],
+            'order' => $data['order']
         ]);
-        $items = Calendar::where('aphorism_id', $model->id)->get();
-        foreach ($items as $item)
-        {
-            $item->delete();
-        }
-        foreach ($data['calendar'] as $datum)
-        {
-            Calendar::create([
-                'aphorism_id' => $model->id,
-                'description_oz' => $datum['description_oz'],
-                'description_uz' => $datum['description_uz'],
-                'description_ru' => $datum['description_ru'],
-                'description_en' => $datum['description_en'],
-            ]);
-        }
+
+        $model->translations()->updateOrCreate([
+                'translates' => $data['translates'],
+            ],[
+               'full_name' => $data['full_name'],
+               'description' => $data['description'],
+               'calendar' => $data['calendar'],
+        ]);
         return $model;
     }
 
     public function delete($id)
     {
-        $model = $this->findById($id);
+        $model = $this->model->find($id);
         if ($model->images)
         {
             deleteImages($model->images, 'aphorism');
-        }
-        $items = Calendar::where('aphorism_id', $model->id)->get();
-        foreach ($items as $item) {
-            $item->delete();
         }
         if ($model->delete()){
             return true;

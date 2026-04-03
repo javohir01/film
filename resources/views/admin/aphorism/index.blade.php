@@ -38,6 +38,7 @@
                             <th>#</th>
                             <th>F.I.O</th>
                             <th>Qisqacha ma'lumoti</th>
+                            <th>Afarizmlar</th>
                             <th>Qo'shilgan vaqti</th>
                             <th>Status</th>
                             <th></th>
@@ -48,8 +49,9 @@
                                 <button type="submit" class="d-none"></button>
                                 <th></th>
                                 <th>
-                                    <input type="text" class="form-control" name="full_name_oz" value="{{request('full_name_oz')}}" placeholder="F.I.O">
+                                    <input type="text" class="form-control" name="full_name" value="{{request('full_name')}}" placeholder="F.I.O">
                                 </th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th>
@@ -67,9 +69,24 @@
                         @forelse($models as $k=>$item)
                             <tr>
                                 <td>{{$k + 1}}</td>
-                                <td>{{$item->full_name_oz}}</td>
-                                <td>{{$item->description_oz}}</td>
-                                <td>{{$item->created_at}}</td>
+                                <td>
+                                    @foreach($item->translations as $translate)
+                                    {{$translate->full_name}}
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($item->translations as $translate)
+                                        {{$translate->description}}
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($item->translations as $translate)
+                                        @foreach($translate['calendar'] as $calendar)
+                                        {{$calendar}}
+                                        @endforeach
+                                    @endforeach
+                                </td>
+                                <td>{{$item->created_at->format('Y-m-d')}}</td>
                                 <td>{{$item->status == 1?'Active':'No Active'}}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
