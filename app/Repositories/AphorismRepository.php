@@ -33,7 +33,9 @@ class AphorismRepository extends BaseRepository
         $this->model = $this->model->whereHas('translations', function ($q) use ($lang){
            $q->where('translates', $lang);
         });
-        return $this->model->with('translations')->orderBy('id', 'desc')->paginate($this->limit);
+        return $this->model->with(['translations' => function ($q) use ($lang) {
+            $q->where('translates', $lang);
+        }])->orderBy('id', 'desc')->paginate($this->limit);
     }
 
     public function findById($id, $request)

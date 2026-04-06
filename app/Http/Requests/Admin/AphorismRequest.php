@@ -52,7 +52,7 @@ class AphorismRequest extends FormRequest
             'calendar.*.required' => 'Taqvim maydoni to\'lidirish tablab etiladi',
             'image.required' => 'Rasm maydoni to\'ldirish talab qilinadi',
             'full_name' => 'F.I.O maydoni to\'ldirish talab qilinadi',
-            'description' => 'Qisqacha ma\'lumot maydoni to\'ldirish talab qilinadi',
+                'description' => 'Qisqacha ma\'lumot maydoni to\'ldirish talab qilinadi',
         ];
     }
 }

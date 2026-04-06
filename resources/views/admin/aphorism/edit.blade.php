@@ -29,6 +29,7 @@
                     <form action="{{route('aphorism.update', $model->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
+                                <input type="hidden" name="translates" value="{{request('translates', 'oz')}}">
                                 <div class="form-group">
                                     <label>{{labels('f.i.o')}}</label>
                                     <input type="text" class="form-control @error('full_name') border-danger @enderror" name="full_name" value="{{$model->translations->first()?->full_name}}">
@@ -54,7 +55,7 @@
                                         <label>{{labels('calendar')}}</label>
                                     </div>
                                     <div class="card-body">
-                                        <div id="dynamic-forms_oz">
+                                        <div id="dynamic-forms">
                                             @php
                                                 $translation = $model->translations->first();
                                                 $calendars = $translation?->calendar ?? [];
