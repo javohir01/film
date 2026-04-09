@@ -18,6 +18,7 @@ class AphorismRepository extends BaseRepository
     }
 
     public function index($request)
+
     {
         $lang = $request['translates'] ?? 'oz';
         if (isset($request->full_name) && !empty($request->full_name))
@@ -89,13 +90,14 @@ class AphorismRepository extends BaseRepository
                'full_name' => $data['full_name'],
                'description' => $data['description'],
                'calendar' => $data['calendar'],
+
         ]);
         return $model;
     }
 
-    public function delete($id)
+    public function delete($id, $translate = null)
     {
-        $model = $this->model->find($id);
+        $model = $this->model->whereIn($id)->first();
         if ($model->images)
         {
             deleteImages($model->images, 'aphorism');

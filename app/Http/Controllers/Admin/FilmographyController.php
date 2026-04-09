@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AphorismTranslations;
 use App\Models\Filmography;
+use App\Models\FilmographyTranslations;
 use App\Models\PersonCategory;
 use App\Models\TelegramUser;
 use App\Traits\ImageUploads;
@@ -11,6 +13,7 @@ use App\Traits\TelegramMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Telegram\Bot\Keyboard\Keyboard;
 
 class FilmographyController extends Controller
@@ -24,23 +27,30 @@ class FilmographyController extends Controller
      */
     public function index(Request $request)
     {
-        $result = $request->all();
-        if (isset($result['name_oz']) && !empty($result['name_oz']) || isset($result['category_id']) && !empty($result['category_id']) || isset($result['status']) && !empty($result['status'])) {
-            if (isset($result['name_oz']) && !empty($result['name_oz'])) {
-                $model = Filmography::where('name_oz', 'ilike','%'.$result['name_oz'].'%');
-            }
-            if (isset($result['category_id']) && !empty($result['category_id'])) {
-                $model = Filmography::where('category_id', $result['category_id']);
-            }
-            if (isset($result['status']) && !empty($result['status'])) {
-                $model = Filmography::where('status', $result['status']);
-            }
-        }else {
-            $model = Filmography::query();
+        $model = Filmography::query();
+        if (isset($request['name']) && !empty($request['name'])){
+            $name = $request['name'];
+            $model = $model->whereHas('translations', function ($q) use ($name){
+                $q->where('name', 'ilike', '%'.$name.'%');
+            });
         }
+        if (isset($request['category_id']) && !empty($request['category_id'])) {
+            $model->where('category_id', $request['category_id']);
+        }
+
+        if (isset($request['status']) && !empty($request['status'])) {
+            $model->where('status', $request['status']);
+        }
+        $lang = $request['translates'] ?? 'oz';
+        $model = $model->whereHas('translations', function ($q) use ($lang){
+            $q->where('translates', $lang);
+        });
         $categories = PersonCategory::where('status', 1)->where('type', 'filmography')->select('id','name_oz')->get();
-        $models = $model->select('id','category_id','name_oz','description_oz','content_oz','images','created_at','updated_at','status')
-            ->with('category')
+        $models = $model->with(['translations' => function($q) use ($lang){
+            $q->where('translates' , $lang);
+        }, 'category' => function($q) use ($lang){
+            $q->select('id', 'name_'.$lang.' as name');
+        }])
             ->orderBy('created_at', 'desc')
             ->paginate(20);
         return view('admin.filmography.index', compact('models','categories'));
@@ -66,44 +76,35 @@ class FilmographyController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name_oz' => 'required|string',
-            'name_uz' => 'required|string',
-            'name_ru' => 'required|string',
-            'name_en' => 'nullable|string',
-            'description_oz' => 'required',
-            'description_uz' => 'required',
-            'description_ru' => 'required',
-            'description_en' => 'nullable',
-            'content_oz' => 'required',
-            'content_uz' => 'required',
-            'content_ru' => 'required',
-            'content_en' => 'nullable',
+            'name' => 'required|string',
+            'description' => 'required',
+            'content' => 'required',
             'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
             'status' => 'required|boolean',
             'category_id' => 'required',
-            'telegram_status' => 'nullable'
+//            'telegram_status' => 'nullable',
+            'translates' => 'required',
+            'order' => 'required'
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
         $data = $request->all();
         $model = Filmography::create([
-            'name_oz' => $data['name_oz'],
-            'name_uz' => $data['name_uz'],
-            'name_ru' => $data['name_ru'],
-            'name_en' => $data['name_en']??null,
-            'description_oz' => $data['description_oz'],
-            'description_uz' => $data['description_uz'],
-            'description_ru' => $data['description_ru'],
-            'description_en' => $data['description_en']??null,
-            'content_oz' => contentByDomDocment($data['content_oz'], 'filmography'),
-            'content_uz' => contentByDomDocment($data['content_uz'], 'filmography'),
-            'content_ru' => contentByDomDocment($data['content_ru'], 'filmography'),
-            'content_en' => contentByDomDocment($data['content_en'], 'filmography'),
+            'slug' => Str::slug($data['name']),
             'images' => $this->uploads($data['image'], 'filmography'),
             'status' => $data['status'],
             'category_id' => $data['category_id'],
-            'telegram_status' => $data['telegram_status']
+//            'telegram_status' => $data['telegram_status'],
+            'order' => $request['order']
+        ]);
+
+        FilmographyTranslations::create([
+            'filmography_id' => $model->id,
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'content' => $data['content'],
+            'translates' => $data['translates']
         ]);
         try {
             if ($model->telegram_status) {
@@ -155,10 +156,13 @@ class FilmographyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        $categories = PersonCategory::where('status', true)->where('type', 'filmography')->select('id','name_oz')->get();
-        $model = Filmography::where('id', $id)->first();
+        $translates = $request['translates'] ?? 'oz';
+        $categories = PersonCategory::where('status', true)->where('type', 'filmography')->select('id','name_'.$translates. ' as name')->get();
+        $model = Filmography::where('id', $id)->with(['translations' => function($q) use ($translates){
+            $q->where('translates', $translates);
+        }])->first();
         return view('admin.filmography.edit', compact('categories', 'model'));
     }
 
@@ -172,22 +176,14 @@ class FilmographyController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name_oz' => 'required|string',
-            'name_uz' => 'required|string',
-            'name_ru' => 'required|string',
-            'name_en' => 'nullable|string',
-            'description_oz' => 'required',
-            'description_uz' => 'required',
-            'description_ru' => 'required',
-            'description_en' => 'nullable',
-            'content_oz' => 'required',
-            'content_uz' => 'required',
-            'content_ru' => 'required',
-            'content_en' => 'nullable',
+            'name' => 'required|string',
+            'description' => 'required',
+            'content' => 'required',
             'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'status' => 'required|boolean',
             'category_id' => 'required',
-            'telegram_status' => 'nullable'
+//            'telegram_status' => 'nullable',
+            'order' => 'required'
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -203,21 +199,18 @@ class FilmographyController extends Controller
             $images = $model->images;
         }
         $model->update([
-            'name_oz' => $data['name_oz'],
-            'name_uz' => $data['name_uz'],
-            'name_ru' => $data['name_ru'],
-            'name_en' => $data['name_en']??null,
-            'description_oz' => $data['description_oz'],
-            'description_uz' => $data['description_uz'],
-            'description_ru' => $data['description_ru'],
-            'description_en' => $data['description_en']??null,
-            'content_oz' => contentByDomDocment($data['content_oz'], 'filmography'),
-            'content_uz' => contentByDomDocment($data['content_uz'], 'filmography'),
-            'content_ru' => contentByDomDocment($data['content_ru'], 'filmography'),
-            'content_en' => contentByDomDocment($data['content_en'], 'filmography'),
+            'slug' => Str::slug($data['name']),
+            'category_id' => $data['category_id'],
             'images' => $images,
             'status' => $data['status'],
-            'category_id' => $data['category_id']
+            'order' => $data['order']
+        ]);
+        $model->translations()->updateOrCreate([
+                'translates' => $data['translates']
+            ],[
+                'name' => $data['name'],
+                'description' => $data['description'],
+                'content' => contentByDomDocment($data['content'], 'filmography'),
         ]);
 
         if ($model) {

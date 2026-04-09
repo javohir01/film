@@ -17,4 +17,9 @@ class Filmography extends Model
     {
         return $this->belongsTo(PersonCategory::class);
     }
+
+    public function translations()
+    {
+        return $this->hasMany(FilmographyTranslations::class, 'filmography_id');
+    }
 }

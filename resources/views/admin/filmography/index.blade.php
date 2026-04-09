@@ -5,12 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Filmografiya</h1>
+                    <h1>Kinokatalog</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('filmography.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Filmography</li>
+                        <li class="breadcrumb-item active">Kinokatalog</li>
                     </ol>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                             <th>Mazular</th>
                             <th>Nomi</th>
                             <th>Qisqacha ma'lumoti</th>
-                            <th>status</th>
+                            <th>Status</th>
                             <th>Qo'shilgan vaqti</th>
                             <th></th>
                         </tr>
@@ -47,6 +47,7 @@
                             <form action="">
                                 <input type="hidden" name="from_filter" value="true">
                                 <button type="submit" class="d-none"></button>
+                                <input type="hidden" name="translates" value="{{request('translates', 'oz')}}">
                                 <th></th>
                                 <th>
                                     <select name="category_id" id="" class="form-control" onchange="this.form.submit()">
@@ -57,7 +58,7 @@
                                     </select>
                                 </th>
                                 <th>
-                                    <input type="text" class="form-control" name="name_oz" value="{{request('name_oz')}}" placeholder="Filmografiya Nomi">
+                                    <input type="text" class="form-control" name="name" value="{{request('name')}}" placeholder="Nomi">
                                 </th>
                                 <th></th>
                                 <th>
@@ -76,11 +77,23 @@
                         @forelse($models as $k=>$model)
                             <tr>
                                 <td>{{$k + 1}}</td>
-                                <td>{{$model->category->name_oz}}</td>
-                                <td>{{$model->name_oz}}</td>
-                                <td>{{$model->description_oz}}</td>
+                                <td>{{$model->category->name}}</td>
+                                <td>
+                                    @foreach($model['translations'] as $translate)
+                                        {{$translate->name}}
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($model['translations'] as $translate)
+                                        {{$translate->description}}
+                                    @endforeach
+                                </td>
                                 <td>{{$model->status == 1?'Active':'No Active'}}</td>
-                                <td>{{$model->created_at}}</td>
+                                <td>
+                                    @foreach($model['translations'] as $translate)
+                                        {{$translate->created_at}}
+                                    @endforeach
+                                </td>
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center">
                                         <a href="{{route('filmography.edit', $model->id)}}" class="btn btn-info mr-2"><i class="fas fa-edit"></i></a>

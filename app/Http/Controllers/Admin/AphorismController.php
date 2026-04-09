@@ -89,6 +89,7 @@ class AphorismController extends Controller
     public function update(AphorismRequest $request, $id)
     {
         $model = $this->repo->update($request->validated(), $id);
+
         if ($model)
         {
             $request->session()->flash('success', 'Success');
@@ -105,9 +106,11 @@ class AphorismController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        $this->repo->delete($id);
+        $translate = $request->all();
+        $this->repo->delete($id, $translate);
+
         return redirect()->route('aphorism.index');
 
     }

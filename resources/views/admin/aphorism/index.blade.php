@@ -86,7 +86,11 @@
                                         @endforeach
                                     @endforeach
                                 </td>
-                                <td>{{$item->created_at->format('Y-m-d')}}</td>
+                                <td>
+                                    @foreach($item->translations as $translate)
+                                        {{$translate->created_at->format('Y-m-d')}}
+                                    @endforeach
+                                </td>
                                 <td>{{$item->status == 1?'Active':'No Active'}}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">

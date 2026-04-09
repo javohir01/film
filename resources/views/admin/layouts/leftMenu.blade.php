@@ -47,7 +47,7 @@
                     <a href="{{route('premiere.index')}}"
                        class="nav-link {{(request()->is('admin/premiere*'))?'active':''}}">
                         <i class="far fa-circle"></i>
-                        <p class="text">Premyera</p>
+                        <p class="text">Kinodayjest</p>
                         <span class="badge badge-primary right"></span>
                     </a>
                 </li>
@@ -55,7 +55,7 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
-                        <p class="text">Suxbatlar</p>
+                        <p class="text">Kinogid</p>
                         <i class="right fas fa-angle-left"></i>
                     </a>
                     <ul class="nav nav-treeview">
@@ -74,19 +74,20 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="{{route('person.index')}}" class="nav-link {{(request()->is('admin/person*'))?'active':''}}">
-                        <i class="far fa-circle"></i>
-                        <p>Shaxsiyatlar</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{route('film_dictionary.index')}}" class="nav-link {{(request()->is('admin/film_dictionary*'))?'active':''}}">
-                        <i class="far fa-circle"></i>
-                        <p class="text">Kinolug‘at</p>
-                        <span class="badge badge-primary right"></span>
-                    </a>
-                </li>
+{{--                <li class="nav-item">--}}
+{{--                    <a href="{{route('person.index')}}" class="nav-link {{(request()->is('admin/person*'))?'active':''}}">--}}
+{{--                        <i class="far fa-circle"></i>--}}
+{{--                        <p>Shaxsiyatlar</p>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--                <li class="nav-item">--}}
+{{--                    <a href="{{route('film_dictionary.index')}}" class="nav-link {{(request()->is('admin/film_dictionary*'))?'active':''}}">--}}
+{{--                        <i class="far fa-circle"></i>--}}
+{{--                        <p class="text">Kinolug‘at</p>--}}
+{{--                        <span class="badge badge-primary right"></span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--
                 <li class="nav-item">
                     <a href="{{route('cinema_fact.index')}}" class="nav-link {{(request()->is('admin/cinema_fact*'))?'active':''}}">
                         <i class="far fa-circle"></i>
@@ -94,17 +95,18 @@
                         <span class="badge badge-primary right"></span>
                     </a>
                 </li>
+--}}
                 <li class="nav-item">
                     <a href="{{route('filmography.index')}}" class="nav-link {{(request()->is('admin/filmography*'))?'active':''}}">
                         <i class="far fa-circle"></i>
-                        <p>Filmografiya</p>
+                        <p>Kinokatalog</p>
                         <span class="badge badge-primary right"></span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{route('film_analysis.index')}}" class="nav-link {{(request()->is('admin/film_analysis*'))?'active':''}}">
                         <i class="far fa-circle"></i>
-                        <p>Kino tahlil</p>
+                        <p>Kinotashxis</p>
                         <span class="badge badge-primary right"></span>
                     </a>
                 </li>
@@ -112,7 +114,7 @@
                 <li class="nav-item">
                     <a href="{{route('book.index')}}" class="nav-link {{(request()->is('admin/book*'))?'active':''}}">
                         <i class="far fa-circle"></i>
-                        <p>Kitob</p>
+                        <p>Kinomutolaa</p>
                         <span class="badge badge-primary right"></span>
                     </a>
                 </li>
