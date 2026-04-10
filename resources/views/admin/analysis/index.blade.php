@@ -6,12 +6,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Kino Tahlil</h1>
+                    <h1>Kinotashxis</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('film_analysis.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Film Analysis</li>
+                        <li class="breadcrumb-item active">Kinotashxis</li>
                     </ol>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                                     <select name="category_id" id="" class="form-control" onchange="this.form.submit()">
                                         <option value="">---</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}" {{request('category_id') == $category->id?'selected':''}}>{{$category->name_oz}}</option>
+                                            <option value="{{$category->id}}" {{request('category_id') == $category->id?'selected':''}}>{{$category->name}}</option>
                                         @endforeach
                                     </select>
                                 </th>
@@ -77,11 +77,22 @@
                         @forelse($models as $k=>$model)
                             <tr>
                                 <td>{{$k + 1}}</td>
-                                <td>{{$model->name_oz}}</td>
-                                <td>{{$model->category->name_oz}}</td>
-                                <td>{{$model->description_oz}}</td>
+                                <td>
+                                    @foreach($model->translations as $translates)
+                                    {{$translates->name}}
+                                    @endforeach
+                                </td>
+                                <td>{{$model->category->name}}</td>
+                                <td>
+                                    @foreach($model->translations as $translates)
+                                    {{$translates->description}}
+                                    @endforeach
+                                </td>
                                 <td>{{$model->status == 1?'Active':'No Active'}}</td>
-                                <td>{{$model->created_at}}</td>
+                                <td>
+                                    @foreach($model->translations as $translates)
+                                        {{$translates->created_at}}
+                                    @endforeach</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
                                         <a href="{{route('film_analysis.edit', $model->id)}}" class="btn btn-info mr-2"><i class="fas fa-edit"></i></a>

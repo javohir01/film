@@ -11,6 +11,14 @@ class PersonCategory extends Model
     protected $guarded = [];
     protected $table = 'categories';
 
+
+    public function scopeActive($query, string $type, string $lang)
+    {
+        return $query->where('status', 1)
+            ->where('type', $type)
+            ->select('id','name_'.$lang.' as name');
+    }
+
     public function person()
     {
         return $this->hasMany(Person::class, 'person_category_id', 'id');

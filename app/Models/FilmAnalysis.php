@@ -16,4 +16,10 @@ class FilmAnalysis extends Model
     {
         return $this->belongsTo(PersonCategory::class);
     }
+
+    public function translations()
+    {
+        return $this->hasMany(FilmAnalysisTranslations::class, 'film_analysis_id');
+
+    }
 }

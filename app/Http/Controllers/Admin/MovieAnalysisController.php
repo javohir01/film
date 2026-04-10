@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\FilmAnalysisRequest;
+use App\Models\FilmAnalysis;
 use App\Models\PersonCategory;
 use App\Repositories\FilmAnalysisRepository;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class MovieAnalysisController extends Controller
      */
     public function index()
     {
-        $categories = PersonCategory::where('status', 1)->where('type', 'analysis')->select('id','name_oz','type')->get();
+        $categories = PersonCategory::active('analysis', $this->request->translates)->get();
         $models = $this->repo->index($this->request);
         return view('admin.analysis.index', compact('models', 'categories'));
     }
@@ -29,10 +30,12 @@ class MovieAnalysisController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $categories = PersonCategory::where('status', 1)->where('type', 'analysis')->select('id','name_oz','type')->get();
-        return view('admin.analysis.create', compact('categories'));
+        $lang = $request->translates??'oz';
+        $categories = PersonCategory::where('status', 1)->where('type', 'analysis')->select('id','name_'.$lang.' as name','type')->get();
+        $order = FilmAnalysis::max('order');
+        return view('admin.analysis.create', compact('categories', 'order'));
     }
 
     /**
@@ -71,10 +74,11 @@ class MovieAnalysisController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        $categories = PersonCategory::where('status', 1)->where('type', 'analysis')->select('id','name_oz','type')->get();
-        $model = $this->repo->findById($id);
+        $translates = $request['translates'] ?? 'oz';
+        $categories = PersonCategory::where('status', 1)->where('type', 'analysis')->select('id','name_'.$translates.' as name','type')->get();
+        $model = $this->repo->findById($id, $translates);
         return view('admin.analysis.edit', compact('model', 'categories'));
     }
 

@@ -235,8 +235,8 @@ class FilmographyController extends Controller
             deleteImages($model->images, 'filmography');
         }
         if ($model->delete()) {
-            return true;
+            return redirect()->route('filmography.index');
         }
-        return false;
+        return back();
     }
 }

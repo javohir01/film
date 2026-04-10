@@ -23,44 +23,16 @@ class FilmAnalysisRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->isMethod('post')) {
-            return [
-                'category_id' => 'required',
-                'name_oz' => 'required',
-                'name_uz' => 'required',
-                'name_ru' => 'required',
-                'name_en' => 'nullable',
-                'description_oz' => 'required',
-                'description_uz' => 'required',
-                'description_ru' => 'required',
-                'description_en' => 'nullable',
-                'content_oz' => 'required',
-                'content_uz' => 'required',
-                'content_ru' => 'required',
-                'content_en' => 'nullable',
-                'status' => 'required|integer',
-                'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-                'telegram_status' => 'nullable'
-            ];
-        }else {
-            return [
-                'category_id' => 'required',
-                'name_oz' => 'required',
-                'name_uz' => 'required',
-                'name_ru' => 'required',
-                'name_en' => 'nullable',
-                'description_oz' => 'required',
-                'description_uz' => 'required',
-                'description_ru' => 'required',
-                'description_en' => 'nullable',
-                'content_oz' => 'required',
-                'content_uz' => 'required',
-                'content_ru' => 'required',
-                'content_en' => 'nullable',
-                'status' => 'required|integer',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-                'telegram_status' => 'nullable'
-            ];
-        }
+        return [
+            'category_id' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'content' => 'required',
+            'status' => 'required|integer',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'telegram_status' => 'nullable',
+            'order' => 'required',
+            'translates' => 'required'
+        ];
     }
 }
