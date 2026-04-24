@@ -20,20 +20,19 @@ class MovieAnalysisController extends Controller
      */
     public function index()
     {
-        $categories = PersonCategory::active('analysis', $this->request->translates)->get();
+        $categories = PersonCategory::active('analysis', $this->request->translates ?? 'oz')->get();
         $models = $this->repo->index($this->request);
         return view('admin.analysis.index', compact('models', 'categories'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     *0
+     * @return \Illuminate\Http\Response0
      */
-    public function create(Request $request)
+    public function create()
     {
-        $lang = $request->translates??'oz';
-        $categories = PersonCategory::where('status', 1)->where('type', 'analysis')->select('id','name_'.$lang.' as name','type')->get();
+        $categories = PersonCategory::active('analysis', $this->request->translates ?? 'oz')->get();
         $order = FilmAnalysis::max('order');
         return view('admin.analysis.create', compact('categories', 'order'));
     }
@@ -77,7 +76,7 @@ class MovieAnalysisController extends Controller
     public function edit($id, Request $request)
     {
         $translates = $request['translates'] ?? 'oz';
-        $categories = PersonCategory::where('status', 1)->where('type', 'analysis')->select('id','name_'.$translates.' as name','type')->get();
+        $categories = PersonCategory::active('analysis', $this->request->translates ?? 'oz')->get();
         $model = $this->repo->findById($id, $translates);
         return view('admin.analysis.edit', compact('model', 'categories'));
     }

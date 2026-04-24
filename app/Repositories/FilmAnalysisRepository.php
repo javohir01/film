@@ -141,7 +141,7 @@ class FilmAnalysisRepository extends BaseRepository
 
     public function delete($id)
     {
-        $model = $this->findById($id);
+        $model = $this->model->find($id);
         if ($model->images) {
             deleteImages($model->images, 'analysis');
         }
