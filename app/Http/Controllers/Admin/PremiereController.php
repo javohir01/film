@@ -19,7 +19,7 @@ class PremiereController extends Controller
      */
     public function index()
     {
-        $categories = PersonCategory::where('status', true)->where('type', 'premiere')->select('id','name_oz','type')->get();
+        $categories = PersonCategory::where('status', true)->where('type', 'film_digest')->select('id','name_oz','type')->get();
         $models = $this->repo->index($this->request);
         return view('admin.premiere.index', compact('models', 'categories'));
     }

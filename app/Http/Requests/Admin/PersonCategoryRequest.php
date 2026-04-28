@@ -24,13 +24,11 @@ class PersonCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name_oz' => 'required',
-            'name_uz' => 'required',
-            'name_ru' => 'required',
-            'name_en' => 'nullable',
+            'name' => 'required',
             'status' => 'required|integer',
             'menu' => 'required|string',
-            'order' => 'required'
+            'order' => 'required',
+            'translates' => 'required'
         ];
     }
 }

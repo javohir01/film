@@ -58,4 +58,9 @@ class PersonCategory extends Model
     {
         return $this->hasMany(FilmAnalysis::class);
     }
+
+    public function translates()
+    {
+        return $this->hasMany(CategoryTranslations::class, 'category_id');
+    }
 }

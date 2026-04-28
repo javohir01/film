@@ -48,10 +48,11 @@
                         <tr>
                             <form action="">
                                 <input type="hidden" name="form_filter" value="true">
+                                <input type="hidden" name="translates" value="{{request('translates', 'oz')}}">
                                 <button class="d-none" type="submit"></button>
                                 <th></th>
                                 <th>
-                                    <input type="text" name="name_oz" class="form-control" placeholder="Name filter" value="{{request('name_oz')}}">
+                                    <input type="text" name="name" class="form-control" placeholder="Name filter" value="{{request('name')}}">
                                 </th>
                                 <th>
                                     <select name="status" id="" class="form-control" onchange="this.form.submit()">
@@ -69,7 +70,11 @@
                         @forelse($models as $k=>$model)
                             <tr>
                                 <td>{{$k + 1}}</td>
-                                <td>{{$model->name_oz}}</td>
+                                <td>
+                                    @foreach($model->translates as $item)
+                                        {{$item->name}}
+                                    @endforeach
+                                </td>
                                 <td>{{$model->status == 1?'Active':'No Active'}}</td>
                                 <td>{{$model->order}}</td>
                                 <td>{{$model->created_at}}</td>

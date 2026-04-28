@@ -3,6 +3,7 @@
 
 namespace App\Repositories;
 
+use App\Models\CategoryTranslations;
 use App\Models\PersonCategory;
 
 class PersonCategoryRepository extends BaseRepository
@@ -14,10 +15,19 @@ class PersonCategoryRepository extends BaseRepository
 
     public function index($request)
     {
-        if (isset($request->name_oz) && !empty($request->name_oz)) {
-            $this->model = $this->model->where('name_oz', 'ilike','%'.$request->name_oz.'%');
+        $lang = $request['translates']??'oz';
+        $name = $request['name'];
+        if (isset($request->name) && !empty($request->name)) {
+            $this->model = $this->model->whereHas('translates',function ($q) use ($name){
+              $q->where('name', 'ilike','%'.$name.'%');
+            });
         }
-        return $this->model->orderBy('created_at', 'desc')->paginate($this->limit);
+
+        $this->model = $this->model->whereHas('translates', function ($q) use ($lang){
+            $q->where('translates', $lang);
+        });
+
+        return $this->model->with('translates')->orderBy('created_at', 'desc')->paginate($this->limit);
     }
 
     public function findById($id)
@@ -28,14 +38,17 @@ class PersonCategoryRepository extends BaseRepository
     public function create($data)
     {
         $model = $this->model->create([
-            'name_oz' => $data['name_oz'],
-            'name_uz' => $data['name_uz'],
-            'name_ru' => $data['name_ru'],
-            'name_en' => $data['name_en']??null,
             'type' => $data['menu'],
             'status' => $data['status'],
             'order' => $data['order']
         ]);
+
+        CategoryTranslations::create([
+            'name' => $data['name'],
+            'translates' => $data['translates'],
+            'category_id' => $model->id
+        ]);
+
         if ($model) {
             return $model;
         }
@@ -46,14 +59,17 @@ class PersonCategoryRepository extends BaseRepository
     {
         $model = $this->findById($id);
         $model->update([
-            'name_oz' => $data['name_oz'],
-            'name_uz' => $data['name_uz'],
-            'name_ru' => $data['name_ru'],
-            'name_en' => $data['name_en']??null,
             'type' => $data['menu'],
             'status' => $data['status'],
             'order' => $data['order']
         ]);
+        $model->translates()->update([
+           'translates' => $data['translates']
+        ],[
+            'name' => $data['name'],
+            'category_id' => $model->id
+        ]);
+
     }
 
     public function delete($id)

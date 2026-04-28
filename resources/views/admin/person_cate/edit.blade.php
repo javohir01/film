@@ -20,30 +20,6 @@
     <section class="content">
         <div class="col-11 mr-auto ml-auto">
             <div class="card card-info card-outline">
-                <div class="card-header">
-                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill"
-                               href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home"
-                               aria-selected="true">O'Z</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
-                               href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile"
-                               aria-selected="false">UZ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-ru-tab" data-toggle="pill"
-                               href="#custom-tabs-three-ru" role="tab" aria-controls="custom-tabs-three-en"
-                               aria-selected="false">RU</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-en-tab" data-toggle="pill"
-                               href="#custom-tabs-three-en" role="tab" aria-controls="custom-tabs-three-en"
-                               aria-selected="false">EN</a>
-                        </li>
-                    </ul>
-                </div>
                 <div class="card-body">
                     <form action="{{route('categories.update',$model->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -55,15 +31,21 @@
                                     <label for="">Menu</label>
                                     <select name="menu" id="menu" class="form-control">
                                         <option value="">---</option>
-                                        <option value="news" {{$model->type == 'news'?'selected':''}}>Yangiliklar</option>
-                                        <option value="premiere" {{$model->type == 'premiere'?'selected':''}}>Premyaerlar</option>
-                                        <option value="analysis" {{$model->type == 'analysis'?'selected':''}}>Kino Tahlil</option>
-                                        <option value="interview" {{$model->type == 'interview'?'selected':''}}>Suxbatlar</option>
-                                        <option value="person" {{$model->type == 'person'?'selected':''}}>Shaxsiyatlar</option>
-                                        <option value="dictionary" {{$model->type == 'dictionary'?'selected':''}}>Kino Lug'at</option>
-                                        <option value="fact" {{$model->type == 'fact'?'selected':''}}>Kino Fakt</option>
-                                        <option value="filmography" {{$model->type == 'filmography'?'selected':''}}>Filmografiya</option>
-                                        <option value="books" {{$model->type == 'books'?'selected':''}}>Kitoblar</option>
+{{--                                        <option value="news" {{$model->type == 'news'?'selected':''}}>Yangiliklar</option>--}}
+{{--                                        <option value="premiere" {{$model->type == 'premiere'?'selected':''}}>Premyaerlar</option>--}}
+{{--                                        <option value="analysis" {{$model->type == 'analysis'?'selected':''}}>Kino Tahlil</option>--}}
+{{--                                        <option value="interview" {{$model->type == 'interview'?'selected':''}}>Suxbatlar</option>--}}
+{{--                                        <option value="person" {{$model->type == 'person'?'selected':''}}>Shaxsiyatlar</option>--}}
+{{--                                        <option value="dictionary" {{$model->type == 'dictionary'?'selected':''}}>Kino Lug'at</option>--}}
+{{--                                        <option value="fact" {{$model->type == 'fact'?'selected':''}}>Kino Fakt</option>--}}
+{{--                                        <option value="filmography" {{$model->type == 'filmography'?'selected':''}}>Filmografiya</option>--}}
+{{--                                        <option value="books" {{$model->type == 'books'?'selected':''}}>Kitoblar</option>--}}
+
+                                        <option value="film_digest" {{$model->type == 'film_digest'? 'selected' : ''}}>Kinodayjest</option>
+                                        <option value="movie_guide" {{$model->type == 'movie_guide'? 'selected' : ''}}>Kinogid</option>
+                                        <option value="cinema_catalog" {{$model->type == 'cinema_catalog'? 'selected' : ''}}>Kinokatalog</option>
+                                        <option value="movie_diagnosis" {{$model->type == 'movie_diagnosis'? 'selected' : ''}}>Kinotashxis</option>
+                                        <option value="books" {{$model->type == 'books'? 'selected' : ''}}>Kinomutolaa</option>
                                     </select>
                                     <small class="text-danger">{{$errors->first('menu')}}</small>
                                 </div>
