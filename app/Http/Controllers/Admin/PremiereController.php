@@ -78,7 +78,10 @@ class PremiereController extends Controller
      */
     public function edit($id)
     {
-        $categories = PersonCategory::where('status', true)->where('type', 'premiere')->select('id','name_oz','type')->get();
+        $lang = $this->request['translates'] ?? 'oz';
+        $categories = PersonCategory::where('status', true)->where('type', 'film_digest')->with(['translates' => function($q) use ($lang){
+            $q->where('translates', $lang);
+        }])->get();
         $model = $this->repo->findById($id);
         return view('admin.premiere.edit', compact('model', 'categories'));
     }
