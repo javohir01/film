@@ -145,13 +145,13 @@
                 <!-- small box -->
                 <div class="small-box bg-blue">
                     <div class="inner">
-                        <h3>{{$menus['premiere']}}</h3>
+                        <h3>{{$menus['film_digest']}}</h3>
                         <p>Premyeralar</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-film"></i>
                     </div>
-                    <a href="{{route('premiere.index')}}" class="small-box-footer">
+                    <a href="{{route('film_digest.index')}}" class="small-box-footer">
                         More info <i class="fa fa-arrow-circle-right"></i>
                     </a>
                 </div>
