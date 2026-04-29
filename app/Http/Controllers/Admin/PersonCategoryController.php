@@ -70,9 +70,9 @@ class PersonCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        $model = $this->repo->findById($id);
+        $model = $this->repo->findById($id, $request);
         return view('admin.person_cate.edit', compact('model'));
     }
 

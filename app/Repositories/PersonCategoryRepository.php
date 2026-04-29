@@ -27,12 +27,17 @@ class PersonCategoryRepository extends BaseRepository
             $q->where('translates', $lang);
         });
 
-        return $this->model->with('translates')->orderBy('created_at', 'desc')->paginate($this->limit);
+        return $this->model->with(['translates' => function($q) use ($lang){
+            $q->where('translates', $lang);
+        }])->orderBy('created_at', 'desc')->paginate($this->limit);
     }
 
-    public function findById($id)
+    public function findById($id, $request)
     {
-        return $this->model->find($id);
+        $lang = $request->translates;
+        return $this->model->with(['translates' => function($q) use ($lang){
+            $q->where('translates', $lang);
+        }])->findOrFail($id);
     }
 
     public function create($data)
@@ -57,24 +62,27 @@ class PersonCategoryRepository extends BaseRepository
 
     public function update($data, $id)
     {
-        $model = $this->findById($id);
+        $model = $this->model->whereId($id)->first();
+        $status = $data['status'] == 1?true:false;
         $model->update([
             'type' => $data['menu'],
-            'status' => $data['status'],
+            'status' => $status,
             'order' => $data['order']
         ]);
-        $model->translates()->update([
+
+        $model->translates()->updateOrCreate([
            'translates' => $data['translates']
         ],[
             'name' => $data['name'],
             'category_id' => $model->id
         ]);
+        return $model;
 
     }
 
     public function delete($id)
     {
-        $model = $this->findById($id);
+        $model = $this->model->whereId($id);
         if ($model->delete()) {
             return true;
         }

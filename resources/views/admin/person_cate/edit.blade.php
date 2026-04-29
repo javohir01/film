@@ -24,82 +24,61 @@
                     <form action="{{route('categories.update',$model->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="tab-content" id="custom-tabs-three-tabContent">
-                            {{----  oz  ----}}
-                            <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel">
-                                <div class="form-group">
-                                    <label for="">Menu</label>
-                                    <select name="menu" id="menu" class="form-control">
-                                        <option value="">---</option>
-{{--                                        <option value="news" {{$model->type == 'news'?'selected':''}}>Yangiliklar</option>--}}
-{{--                                        <option value="premiere" {{$model->type == 'premiere'?'selected':''}}>Premyaerlar</option>--}}
-{{--                                        <option value="analysis" {{$model->type == 'analysis'?'selected':''}}>Kino Tahlil</option>--}}
-{{--                                        <option value="interview" {{$model->type == 'interview'?'selected':''}}>Suxbatlar</option>--}}
-{{--                                        <option value="person" {{$model->type == 'person'?'selected':''}}>Shaxsiyatlar</option>--}}
-{{--                                        <option value="dictionary" {{$model->type == 'dictionary'?'selected':''}}>Kino Lug'at</option>--}}
-{{--                                        <option value="fact" {{$model->type == 'fact'?'selected':''}}>Kino Fakt</option>--}}
-{{--                                        <option value="filmography" {{$model->type == 'filmography'?'selected':''}}>Filmografiya</option>--}}
-{{--                                        <option value="books" {{$model->type == 'books'?'selected':''}}>Kitoblar</option>--}}
+                        <input type="hidden" name="translates" value="{{request('translates', 'oz')}}">
+                        <div class="form-group">
+                            <label for="">Menu</label>
+                            <select name="menu" id="menu" class="form-control">
+                                <option value="">---</option>
+                                {{--                                        <option value="news" {{$model->type == 'news'?'selected':''}}>Yangiliklar</option>--}}
+                                {{--                                        <option value="premiere" {{$model->type == 'premiere'?'selected':''}}>Premyaerlar</option>--}}
+                                {{--                                        <option value="analysis" {{$model->type == 'analysis'?'selected':''}}>Kino Tahlil</option>--}}
+                                {{--                                        <option value="interview" {{$model->type == 'interview'?'selected':''}}>Suxbatlar</option>--}}
+                                {{--                                        <option value="person" {{$model->type == 'person'?'selected':''}}>Shaxsiyatlar</option>--}}
+                                {{--                                        <option value="dictionary" {{$model->type == 'dictionary'?'selected':''}}>Kino Lug'at</option>--}}
+                                {{--                                        <option value="fact" {{$model->type == 'fact'?'selected':''}}>Kino Fakt</option>--}}
+                                {{--                                        <option value="filmography" {{$model->type == 'filmography'?'selected':''}}>Filmografiya</option>--}}
+                                {{--                                        <option value="books" {{$model->type == 'books'?'selected':''}}>Kitoblar</option>--}}
 
-                                        <option value="film_digest" {{$model->type == 'film_digest'? 'selected' : ''}}>Kinodayjest</option>
-                                        <option value="movie_guide" {{$model->type == 'movie_guide'? 'selected' : ''}}>Kinogid</option>
-                                        <option value="cinema_catalog" {{$model->type == 'cinema_catalog'? 'selected' : ''}}>Kinokatalog</option>
-                                        <option value="movie_diagnosis" {{$model->type == 'movie_diagnosis'? 'selected' : ''}}>Kinotashxis</option>
-                                        <option value="books" {{$model->type == 'books'? 'selected' : ''}}>Kinomutolaa</option>
-                                    </select>
-                                    <small class="text-danger">{{$errors->first('menu')}}</small>
-                                </div>
+                                <option value="film_digest" {{$model->type == 'film_digest'? 'selected' : ''}}>
+                                    Kinodayjest
+                                </option>
+                                <option value="movie_guide" {{$model->type == 'movie_guide'? 'selected' : ''}}>Kinogid
+                                </option>
+                                <option value="cinema_catalog" {{$model->type == 'cinema_catalog'? 'selected' : ''}}>
+                                    Kinokatalog
+                                </option>
+                                <option value="movie_diagnosis" {{$model->type == 'movie_diagnosis'? 'selected' : ''}}>
+                                    Kinotashxis
+                                </option>
+                                <option value="books" {{$model->type == 'books'? 'selected' : ''}}>Kinomutolaa</option>
+                            </select>
+                            <small class="text-danger">{{$errors->first('menu')}}</small>
+                        </div>
 
-                                <div class="form-group">
-                                    <label>Kategoriya Nomi</label>
-                                    <input type="text" class="form-control" name="name_oz" value="{{$model->name_oz}}">
-                                    <small class="text-danger">{{$errors->first('name_oz')}}</small>
-                                </div>
+                        <div class="form-group">
+                            <label>Kategoriya Nomi</label>
+                            <input type="text" class="form-control" name="name" value="{{$model->translates->first()?->name}}">
+                            <small class="text-danger">{{$errors->first('name')}}</small>
+                        </div>
 
-                                <div class="form-group">
-                                    <label for="">Status</label>
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="1" {{$model->status == 1?'selected':''}}>Active</option>
-                                        <option value="2" {{$model->status == 2?'selected':''}}>No Active</option>
-                                    </select>
-                                    <small class="text-danger">{{$errors->first('status')}}</small>
-                                </div>
+                        <div class="form-group">
+                            <label for="">Status</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="1" {{$model->status == 1?'selected':''}}>Active</option>
+                                <option value="2" {{$model->status == 2?'selected':''}}>No Active</option>
+                            </select>
+                            <small class="text-danger">{{$errors->first('status')}}</small>
+                        </div>
 
-                                <div class="form-group">
-                                    <label for="">Order</label>
-                                    <input type="text" class="form-control" name="order" placeholder="Order" value="{{$model->order}}">
-                                    <small class="text-danger"{{$errors->first('order')}}></small>
-                                </div>
+                        <div class="form-group">
+                            <label for="">Order</label>
+                            <input type="text" class="form-control" name="order" placeholder="Order"
+                                   value="{{$model->order}}">
+                            <small class="text-danger"{{$errors->first('order')}}></small>
+                        </div>
 
-                            </div>
-                            {{----  uz  ----}}
-                            <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel">
-                                <div class="form-group">
-                                    <label>Категория Номи</label>
-                                    <input type="text" class="form-control" name="name_uz" value="{{$model->name_uz}}">
-                                    <small class="text-danger">{{$errors->first('name_uz')}}</small>
-                                </div>
-                            </div>
-                            {{----  ru  ----}}
-                            <div class="tab-pane fade" id="custom-tabs-three-ru" role="tabpanel">
-                                <div class="form-group">
-                                    <label>Категория Номи</label>
-                                    <input type="text" class="form-control" name="name_ru" value="{{$model->name_ru}}">
-                                    <small class="text-danger">{{$errors->first('name_ru')}}</small>
-                                </div>
-                            </div>
-                            {{----  en  ----}}
-                            <div class="tab-pane fade" id="custom-tabs-three-en" role="tabpanel">
-                                <div class="form-group">
-                                    <label>Категория Номи</label>
-                                    <input type="text" class="form-control" name="name_en" value="{{$model->name_en}}">
-                                    <small class="text-danger">{{$errors->first('name_en')}}</small>
-                                </div>
-                            </div>
-
-                            <div class="text-right">
-                                <button class="btn btn-success">&check;Saqlash</button>
-                            </div>
+                        <div class="text-right">
+                            <button class="btn btn-success">&check;Saqlash</button>
                         </div>
                     </form>
                 </div>
