@@ -44,8 +44,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{route('premiere.index')}}"
-                       class="nav-link {{(request()->is('admin/premiere*'))?'active':''}}">
+                    <a href="{{route('film_digest.index')}}"
+                       class="nav-link {{(request()->is('admin/film_digest*'))?'active':''}}">
                         <i class="far fa-circle"></i>
                         <p class="text">Kinodayjest</p>
                         <span class="badge badge-primary right"></span>

@@ -28,7 +28,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Premyera  <i class="fa fa-film"></i></h3>
                     <div class="text-right">
-                        <a href="{{route('premiere.create')}}" class="btn btn-success">&plus; Qo'shish</a>
+                        <a href="{{route('film_digest.create')}}" class="btn btn-success">&plus; Qo'shish</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -83,8 +83,8 @@
                                 <td>{{$model->created_at}}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <a href="{{route('premiere.edit', $model->id)}}" class="btn btn-info mr-2"><i class="fas fa-edit"></i></a>
-                                        <form action="{{ route('premiere.destroy', $model->id) }}" method="post" id="deleteItem-{{$model->id}}">
+                                        <a href="{{route('film_digest.edit', $model->id)}}" class="btn btn-info mr-2"><i class="fas fa-edit"></i></a>
+                                        <form action="{{ route('film_digest.destroy', $model->id) }}" method="post" id="deleteItem-{{$model->id}}">
                                             @csrf
                                             @method('delete')
 
