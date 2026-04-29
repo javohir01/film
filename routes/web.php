@@ -20,7 +20,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'] ,function (){
     Route::resources([
         'aphorism' => \App\Http\Controllers\Admin\AphorismController::class,
         'news' => \App\Http\Controllers\Admin\NewsController::class,
-        'premiere' => \App\Http\Controllers\Admin\PremiereController::class,
+        'film_digest' => \App\Http\Controllers\Admin\PremiereController::class,
         'interview' => \App\Http\Controllers\Admin\InterviewController::class,
         'interview_peoples' => \App\Http\Controllers\Admin\InterviewPeoplesController::class,
         'person' => \App\Http\Controllers\Admin\PersonController::class,

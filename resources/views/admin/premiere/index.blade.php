@@ -55,7 +55,7 @@
                                     <select name="category_id" id="" onchange="this.form.submit()" class="form-control">
                                         <option value="">---</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}" {{request('category_id') == $category->id?'selected':'' }}>{{$category->name_oz}}</option>
+                                            <option value="{{$category->id}}" {{request('category_id') == $category->id?'selected':'' }}>{{$category->translates->first()?->name}}</option>
                                         @endforeach
                                     </select>
                                 </th>

@@ -25,30 +25,6 @@
                 </div>
             @endif
             <div class="card card-outline card-info">
-                <div class="card-header">
-                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill"
-                               href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home"
-                               aria-selected="true">O'Z</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
-                               href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile"
-                               aria-selected="false">UZ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-ru-tab" data-toggle="pill"
-                               href="#custom-tabs-three-ru" role="tab" aria-controls="custom-tabs-three-ru"
-                               aria-selected="false">RU</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" id="custom-tabs-three-en-tab" data-toggle="pill"
-                               href="#custom-tabs-three-en" role="tab" aria-controls="custom-tabs-three-en"
-                               aria-selected="false">EN</a>
-                        </li>
-                    </ul>
-                </div>
                 <div class="card-body">
                     <form action="{{route('premiere.store')}}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -61,7 +37,9 @@
                                     <select name="category_id" id="category_id" class="form-control @error('category_id') border-danger @enderror">
                                         <option>----</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->name_oz}}</option>
+                                            @foreach($category->translates as $translate)
+                                                <option value="{{$category->id}}">{{$translate->name}}</option>
+                                            @endforeach
                                         @endforeach
                                     </select>
                                     <small class="text-danger">{{$errors->first('premiere_category')}}</small>

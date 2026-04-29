@@ -19,7 +19,10 @@ class PremiereController extends Controller
      */
     public function index()
     {
-        $categories = PersonCategory::where('status', true)->where('type', 'film_digest')->select('id','name_oz','type')->get();
+        $lang = $this->request['translates'] ?? 'oz';
+        $categories = PersonCategory::where('status', true)->where('type', 'film_digest')->with(['translates' => function($q) use ($lang){
+            $q->where('translates', $lang);
+        }])->get();
         $models = $this->repo->index($this->request);
         return view('admin.premiere.index', compact('models', 'categories'));
     }
@@ -31,7 +34,10 @@ class PremiereController extends Controller
      */
     public function create()
     {
-        $categories = PersonCategory::where('status', true)->where('type', 'premiere')->select('id','name_oz','type')->get();
+        $lang = $this->request['translates'] ?? 'oz';
+        $categories = PersonCategory::where('status', true)->where('type', 'film_digest')->with(['translates' => function($q) use ($lang){
+            $q->where('translates', $lang);
+        }])->get();
         return view('admin.premiere.create', compact('categories'));
     }
 
