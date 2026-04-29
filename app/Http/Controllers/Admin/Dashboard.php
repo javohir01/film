@@ -21,7 +21,7 @@ class Dashboard extends Controller
         $menus = [
             'news' => News::count(),
             'aphorism' => Aphorism::count(),
-            'premiere' => Premiere::count(),
+            'film_digest' => Premiere::count(),
             'interview' => Interview::count(),
         ];
 
