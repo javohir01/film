@@ -21,7 +21,7 @@ Route::get('auth/google', [\App\Http\Controllers\GoogleController::class, 'redir
 Route::get('auth/google/callback', [\App\Http\Controllers\GoogleController::class, 'callback']);
 Route::get('aphorism', [\App\Http\Controllers\AphorismController::class, 'index'])->name('aphorism');
 Route::get('news', [\App\Http\Controllers\NewsController::class, 'index'])->name('news.api.index');
-Route::get('premiere', [\App\Http\Controllers\PremiereController::class, 'index'])->name('premiere.api.index');
+Route::get('film_digest', [\App\Http\Controllers\PremiereController::class, 'index'])->name('premiere.api.index');
 Route::get('movie_analysis', [\App\Http\Controllers\FilmAnalysisController::class, 'index'])->name('movie_analysis.api.index');
 Route::get('interview', [\App\Http\Controllers\InterviewController::class, 'index'])->name('interview.api.index');
 Route::get('persons', [\App\Http\Controllers\PersonDirectorController::class, 'index'])->name('person.api.index');
