@@ -36,7 +36,7 @@ Route::post('/telegram/webhook', [\App\Http\Controllers\TelegramController::clas
 
 Route::get('aphorism', [\App\Http\Controllers\AphorismController::class, 'index'])->name('aphorism');
 Route::get('news/{id}', [\App\Http\Controllers\NewsController::class, 'show'])->name('news.api.show')->middleware('view_count');
-Route::get('premiere/{id}', [\App\Http\Controllers\PremiereController::class, 'show'])->name('premiere.api.show');
+Route::get('film_digest/{id}', [\App\Http\Controllers\PremiereController::class, 'show'])->name('premiere.api.show');
 Route::get('movie_analysis/{id}', [\App\Http\Controllers\FilmAnalysisController::class,'show'])->name('movie_analysis.api.show');
 Route::get('interview/{id}', [\App\Http\Controllers\InterviewController::class, 'show'])->name('interview.api.show');
 Route::get('persons/{id}', [\App\Http\Controllers\PersonDirectorController::class, 'show'])->name('person.api.show');

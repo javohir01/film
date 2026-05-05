@@ -17,12 +17,19 @@ class PremiereController extends Controller
             $data = Premiere::where('category_id', $result['category_id'])->where('status', 1)->whereHas('translates', function ($q) use ($lang){
                 $q->where('translates', $lang);
             })
-                ->with('translates')
+                ->with(['translates' => function ($q) use ($lang){
+                    $q->where('translates', $lang);
+                }])
                 ->orderBy('id', 'desc')
                 ->paginate($per_page);
         }else{
-            $data = Premiere::where('status', 1)->orderBy('id', 'desc')
-                ->select('id','category_id','images','created_at','name_'.$lang.' as name','description_'.$lang.' as description','content_'.$lang.' as content','view_count')
+            $data = Premiere::where('status', 1)->whereHas('translates', function ($q) use ($lang){
+                $q->where('translates', $lang);
+            })
+                ->with(['translates' => function ($q) use ($lang){
+                    $q->where('translates', $lang);
+                }])
+                ->orderBy('id', 'desc')
                 ->paginate($per_page);
         }
         if ($data) {
@@ -35,7 +42,12 @@ class PremiereController extends Controller
     {
         $lang = $request->header('lang', 'oz');
         $param = Premiere::where('id', $id)
-            ->select('id','category_id','images','name_'.$lang.' as name', 'description_'.$lang.' as description','content_'.$lang.' as content','created_at','updated_at','view_count')
+            ->whereHas('translates', function ($q) use ($lang){
+                $q->where('translates', $lang);
+            })
+            ->with(['translates' => function ($q) use ($lang){
+                $q->where('translates', $lang);
+            }])
             ->first();
         if ($param) {
             $ip = $request->route('id');
