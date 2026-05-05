@@ -52,7 +52,7 @@ class PremiereController extends Controller
         $model = $this->repo->create($request->validated());
         if ($model) {
             $request->session()->flash('success', 'Success');
-            return redirect()->route('premiere.index');
+            return redirect()->route('film_digest.index');
         }else {
             $request->session()->flash('error', 'Errors');
             return redirect()->back();
@@ -82,7 +82,7 @@ class PremiereController extends Controller
         $categories = PersonCategory::where('status', true)->where('type', 'film_digest')->with(['translates' => function($q) use ($lang){
             $q->where('translates', $lang);
         }])->get();
-        $model = $this->repo->findById($id);
+        $model = $this->repo->findById($id, $this->request);
         return view('admin.premiere.edit', compact('model', 'categories'));
     }
 
@@ -98,7 +98,7 @@ class PremiereController extends Controller
         $model = $this->repo->update($request->validated(), $id);
         if ($model) {
             $request->session()->flash('success', 'Success');
-            return redirect()->route('premiere.index');
+            return redirect()->route('film_digest.index');
         }else {
             $request->session()->flash('error', 'Errors');
             return redirect()->back();

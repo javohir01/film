@@ -49,7 +49,7 @@
                                 <button class="d-none" type="submit"></button>
                                 <th></th>
                                 <th>
-                                    <input type="text" name="name_oz" class="form-control" value="{{request('name_oz')}}" placeholder="Premyeralar Nomi">
+                                    <input type="text" name="name" class="form-control" value="{{request('name')}}" placeholder="Premyeralar Nomi">
                                 </th>
                                 <th>
                                     <select name="category_id" id="" onchange="this.form.submit()" class="form-control">
@@ -76,9 +76,21 @@
                         @forelse($models as $k => $model)
                             <tr>
                                 <td>{{$k + 1}}</td>
-                                <td>{{$model->name_oz}}</td>
-                                <td>{{$model->category->name_oz}}</td>
-                                <td>{{$model->description_oz}}</td>
+                                <td>
+                                    @foreach($model->translates  as $item)
+                                    {{$item->name}}
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($model->category->translates as $item)
+                                    {{$item->name}}
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($model->translates as $item)
+                                    {{$item->description}}
+                                    @endforeach
+                                </td>
                                 <td>{{$model->status == 1?'Active':'No Active'}}</td>
                                 <td>{{$model->created_at}}</td>
                                 <td>

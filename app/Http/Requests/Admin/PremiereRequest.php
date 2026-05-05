@@ -23,45 +23,17 @@ class PremiereRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->isMethod('post')) {
-            return [
-                'name_oz' => 'required',
-                'name_uz' => 'required',
-                'name_ru' => 'required',
-                'name_en' => 'nullable',
-                'description_oz' => 'required',
-                'description_uz' => 'required',
-                'description_ru' => 'required',
-                'description_en' => 'nullable',
-                'content_oz' => 'required',
-                'content_uz' => 'required',
-                'content_ru' => 'required',
-                'content_en' => 'nullable',
-                'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
-                'status' => 'required|integer',
-                'category_id' => 'required',
-                'telegram_status' => 'nullable'
-            ];
-        } else {
-            return [
-                'name_oz' => 'required',
-                'name_uz' => 'required',
-                'name_ru' => 'required',
-                'name_en' => 'nullable',
-                'description_oz' => 'required',
-                'description_uz' => 'required',
-                'description_ru' => 'required',
-                'description_en' => 'nullable',
-                'content_oz' => 'required',
-                'content_uz' => 'required',
-                'content_ru' => 'required',
-                'content_en' => 'nullable',
-                'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-                'status' => 'required|integer',
-                'category_id' => 'required',
-                'telegram_status' => 'nullable '
-            ];
-        }
+
+        return [
+            'name' => 'required',
+            'description' => 'required',
+            'content' => 'required',
+            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+            'status' => 'required|integer',
+            'category_id' => 'required',
+            'telegram_status' => 'nullable',
+            'translates' => 'required'
+        ];
     }
 
     public function messages()

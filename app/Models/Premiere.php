@@ -17,4 +17,9 @@ class Premiere extends Model
         return $this->belongsTo(PersonCategory::class);
     }
 
+    public function translates()
+    {
+        return $this->hasMany(PrimiereTranslation::class);
+    }
+
 }

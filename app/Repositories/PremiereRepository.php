@@ -9,6 +9,7 @@ use App\Models\TelegramUser;
 use App\Traits\ImageUploads;
 use App\Traits\TelegramMessage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Telegram\Bot\Keyboard\Keyboard;
 
 class PremiereRepository extends BaseRepository
@@ -22,8 +23,10 @@ class PremiereRepository extends BaseRepository
 
     public function index($request)
     {
-        if (isset($request->name_oz) && !empty($request->name_oz)) {
-            $this->model = $this->model->where('name_oz', 'ilike', '%' . $request->name_oz . '%');
+        if (isset($request->name) && !empty($request->name)) {
+            $this->model = $this->model->whereHas('translates', function ($q) use ($request){
+                $q->where('translates', $request['name']);
+            });
         }
         if (isset($request->category_id) && !empty($request->category_id)) {
             $this->model = $this->model->where('category_id', $request->category_id);
@@ -31,33 +34,43 @@ class PremiereRepository extends BaseRepository
         if (isset($request->status) && !empty($request->status)) {
             $this->model = $this->model->where('status', $request->status);
         }
-        return $this->model->with('category')->orderBy('id', 'desc')->paginate($this->limit)->appends($request->query());
+        $translates = $request['translates'] ?? 'oz';
+        $this->model = $this->model->whereHas('translates', function ($q) use ($translates){
+            $q->where('translates', $translates);
+        });
+        return $this->model->with(['category.translates' => function ($q) use ($translates){
+            $q->where('translates', $translates);
+            },
+            'translates' => function ($q) use ($translates){
+            $q->where('translates', $translates);
+        }])->orderBy('id', 'desc')->paginate($this->limit)->appends($request->query());
     }
 
-    public function findById($id)
+    public function findById($id, $request)
     {
-        return $this->model->find($id);
+        $lang = $request['translates'];
+        $model = $this->model->findOrFail($id);
+        $model->load(['translates' => function ($q) use ($lang){
+           $q->where('translates', $lang);
+        }]);
+        return $model;
     }
 
     public function create($data)
     {
         $model = $this->model->create([
             'category_id' => $data['category_id'],
-            'name_oz' => $data['name_oz'],
-            'name_uz' => $data['name_uz'],
-            'name_ru' => $data['name_ru'],
-            'name_en' => $data['name_en']??null,
-            'description_oz' => $data['description_oz'],
-            'description_uz' => $data['description_uz'],
-            'description_ru' => $data['description_ru'],
-            'description_en' => $data['description_en']??null,
-            'content_oz' => contentByDomDocment($data['content_oz'], 'premiere'),
-            'content_uz' => contentByDomDocment($data['content_uz'], 'premiere'),
-            'content_ru' => contentByDomDocment($data['content_ru'], 'premiere'),
-            'content_en' => $data['content_en']??null,
-            'images' => $this->uploads($data['image'], 'premiere'),
+            'slug' => Str::slug($data['name']),
+            'images' => $this->uploads($data['image'], 'film_digest'),
             'status' => $data['status'],
             'telegram_status' => $data['telegram_status']??false,
+        ]);
+
+        $model->translates()->create([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'content' => contentByDomDocment($data['content'], 'premiere'),
+            'translates' => $data['translates']
         ]);
 
         try {
@@ -94,7 +107,7 @@ class PremiereRepository extends BaseRepository
 
     public function update($data, $id)
     {
-        $model = $this->findById($id);
+        $model = $this->model->findOrFail($id);
         if (isset($data['image']) && !empty($data['image'])) {
             if ($model->images) {
                 deleteImages($model->images, 'premiere');
@@ -105,21 +118,18 @@ class PremiereRepository extends BaseRepository
         }
         $model->update([
             'category_id' => $data['category_id'],
-            'name_oz' => $data['name_oz'],
-            'name_uz' => $data['name_uz'],
-            'name_ru' => $data['name_ru'],
-            'name_en' => $data['name_en']??null,
-            'description_oz' => $data['description_oz'],
-            'description_uz' => $data['description_uz'],
-            'description_ru' => $data['description_ru'],
-            'description_en' => $data['description_en'],
-            'content_oz' => contentByDomDocment($data['content_oz'], 'premiere'),
-            'content_uz' => contentByDomDocment($data['content_uz'], 'premiere'),
-            'content_ru' => contentByDomDocment($data['content_ru'], 'premiere'),
-            'content_en' => $data['content_en']??null,
+            'slug' => Str::slug($data['name']),
             'images' => $images,
             'status' => $data['status'],
             'telegram_status' => $data['telegram_status']??false
+        ]);
+
+        $model->translates()->updateOrCreate([
+            'translates' => $data['translates']
+            ],[
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'content' => contentByDomDocment($data['content'], 'premiere'),
         ]);
 
         try {
@@ -148,7 +158,7 @@ class PremiereRepository extends BaseRepository
 
     public function delete($id)
     {
-        $model = $this->findById($id);
+        $model = $this->model->findOrFail($id);
         if ($model->images) {
             deleteImages($model->images, 'premiere');
         }
