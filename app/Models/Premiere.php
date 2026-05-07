@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use App\Traits\GlobalSearch;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Premiere extends Model
+{
+    use HasFactory;
+    use GlobalSearch;
+    protected $guarded = [];
+
+    public function category()
+    {
+        return $this->belongsTo(PersonCategory::class);
+    }
+
+    public function translates()
+    {
+        return $this->hasMany(PrimiereTranslation::class);
+    }
+
+}

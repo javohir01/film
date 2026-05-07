@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class PersonCategory extends Model
+{
+    use HasFactory;
+    protected $guarded = [];
+    protected $table = 'categories';
+
+
+    public function scopeActive($query, string $type, string $lang)
+    {
+        return $query->where('status', 1)
+            ->where('type', $type)
+            ->select('id','name_'.$lang.' as name');
+    }
+
+    public function person()
+    {
+        return $this->hasMany(Person::class, 'person_category_id', 'id');
+    }
+
+    public function news()
+    {
+        return $this->hasMany(News::class, 'category_id', 'id');
+    }
+
+    public function premiere()
+    {
+        return $this->hasOne(Premiere::class, 'category_id', 'id');
+    }
+
+    public function interview()
+    {
+        return $this->hasOne(Interview::class, 'category_id', 'id');
+    }
+
+    public function interviewPeople()
+    {
+        return $this->hasOne(InterviewPeoples::class, 'category_id', 'id');
+    }
+
+    public function filmography()
+    {
+        return $this->hasOne(Filmography::class, 'category_id', 'id');
+    }
+
+    public function book()
+    {
+        return $this->hasOne(Books::class, 'category_id', 'id');
+    }
+
+    public function analysis()
+    {
+        return $this->hasMany(FilmAnalysis::class);
+    }
+
+    public function translates()
+    {
+        return $this->hasMany(CategoryTranslations::class, 'category_id');
+    }
+}
