@@ -20,7 +20,10 @@ class BooksController extends Controller
     public function index()
     {
         $models = $this->repo->index($this->request);
-        $categories = PersonCategory::where('status', true)->where('type', 'books')->select('id','name_oz','type')->get();
+        $translates = $this->request->translates ?? 'oz';
+        $categories = PersonCategory::where('status', true)->where('type', 'books')->with(['translates' => function ($q) use ($translates){
+            $q->where('translates', $translates);
+        }])->get();
         return view('admin.book.index', compact('models','categories'));
     }
 
@@ -31,7 +34,10 @@ class BooksController extends Controller
      */
     public function create()
     {
-        $categories = PersonCategory::where('status', true)->where('type', 'books')->select('id','name_oz','type')->get();
+        $translates = $this->request->translates ?? 'oz';
+        $categories = PersonCategory::where('status', true)->where('type', 'books')->with(['translates' => function ($q) use ($translates){
+            $q->where('translates', $translates);
+        }])->get();
         return view('admin.book.create', compact('categories'));
     }
 
@@ -72,8 +78,11 @@ class BooksController extends Controller
      */
     public function edit($id)
     {
-        $model = $this->repo->edit($id);
-        $categories = PersonCategory::where('status', true)->where('type', 'books')->select('id','name_oz','type')->get();
+        $model = $this->repo->edit($id, $this->request);
+        $translates = $this->request->translates ?? 'oz';
+        $categories = PersonCategory::where('status', true)->where('type', 'books')->with(['translates' => function ($q) use ($translates){
+            $q->where('translates', $translates);
+        }])->get();
         return view('admin.book.edit', compact('model', 'categories'));
     }
 

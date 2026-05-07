@@ -26,7 +26,9 @@ class NewsController extends Controller
     {
         $params = $request->all();
         $lang = $params['translates'] ?? 'oz';
-        $categories = PersonCategory::select('id', 'name_'.$lang.' as name')->where('type', 'news')->where('status', true)->get();
+        $categories = PersonCategory::with(['translates' => function ($q) use ($lang){
+            $q->where('translates', $lang);
+        }])->where('type', 'news')->where('status', true)->get();
         $models = $this->repo->index($request);
         return view('admin.news.index', compact('models', 'categories'));
     }
@@ -40,7 +42,9 @@ class NewsController extends Controller
     {
         $params = $request->all();
         $lang = $params['translate'] ?? 'oz';
-        $categories = PersonCategory::select('id', 'name_'.$lang.' as name')->where('type', 'news')->where('status', true)->get();
+        $categories = PersonCategory::with(['translates' => function ($q) use ($lang){
+            $q->where('translates', $lang);
+        }])->where('type', 'news')->where('status', true)->get();
        return view('admin.news.create', compact('categories'));
     }
 
@@ -87,7 +91,9 @@ class NewsController extends Controller
     {
         $translates = $request->all();
         $lang = $translates['translates'] ?? 'oz';
-        $categories = PersonCategory::select('id', 'name_'.$lang.' as name')->where('type', 'news')->where('status', true)->get();
+        $categories = PersonCategory::with(['translates' => function ($q) use ($lang){
+            $q->where('translates', $lang);
+        }])->where('type', 'news')->where('status', true)->get();
         $model = $this->repo->findById($id, $lang);
         return view('admin.news.edit', compact('model', 'categories'));
     }

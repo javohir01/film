@@ -255,6 +255,10 @@ if (!function_exists('labels')) {
                 'f.i.o'       => 'F.I.O',
                 'calendar'    => 'Taqvim',
                 'order'       => 'Joylavush',
+                'book'        => 'Kitob haqida',
+                'author'      => 'Muallif',
+                'file'        => 'Fayillar',
+                'book_date'   => 'Sana',
             ],
             'uz' => [
                 'name'        => 'Номи',
@@ -269,6 +273,10 @@ if (!function_exists('labels')) {
                 'f.i.o'       => 'Ф.И.О',
                 'calendar'    => 'Тақвим',
                 'order'       => 'Жойлавуш',
+                'book'        => 'Китоб ҳақида',
+                'author'      => 'Муаллиф',
+                'file'        => 'Файиллар',
+                'book_date'   => 'Сана',
             ],
             'ru' => [
                 'name'        => 'Название',
@@ -282,7 +290,11 @@ if (!function_exists('labels')) {
                 'date'        => 'Дополнительное время',
                 'f.i.o'       => 'Ф.И.О',
                 'calendar'    => 'Календарь',
-                'order'       => 'Сортировка'
+                'order'       => 'Сортировка',
+                'book'        => 'О книге',
+                'author'      => 'Автор',
+                'file'        => 'Файлы',
+                'book_date'   => 'Дата',
             ],
             'en' => [
                 'name'        => "Name",
@@ -296,7 +308,10 @@ if (!function_exists('labels')) {
                 'f.i.o'       => 'F.I.O',
                 'calendar'    => 'Calendar',
                 'order'       => 'Order',
-
+                'book'        => 'About the book',
+                'author'      => 'Author',
+                'file'        => 'Files',
+                'book_date'   => 'Date',
             ]
         ];
         return $labels[$lang][$key] ?? $key;

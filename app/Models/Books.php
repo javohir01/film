@@ -16,4 +16,9 @@ class Books extends Model
     {
         return $this->belongsTo(PersonCategory::class);
     }
+
+    public function translates()
+    {
+        return $this->hasMany(BookTranslatins::class, 'book_id');
+    }
 }

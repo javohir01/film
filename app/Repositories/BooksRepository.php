@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Models\Books;
 use App\Traits\ImageUploads;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class BooksRepository extends BaseRepository
 {
@@ -19,8 +20,11 @@ class BooksRepository extends BaseRepository
 
     public function index($request)
     {
-        if (isset($request->name_oz) && !empty($request->name_oz)) {
-            $this->model = $this->model->where('name_oz', 'ilike', '%' . $request->name_oz . '%');
+        if (isset($request->name) && !empty($request->name)) {
+            $name = $request->name;
+            $this->model = $this->model->whereHas('translates', function ($q) use ($name){
+              $q->where('name', 'ilike', '%'.$name.'%');
+            });
         }
 
         if (isset($request->category_id) && !empty($request->category_id)) {
@@ -30,44 +34,49 @@ class BooksRepository extends BaseRepository
         if (isset($request->status) && !empty($request->status)) {
             $this->model = $this->model->where('status', $request->status);
         }
-        return $this->model->with('category')->orderBy('id', 'desc')->paginate($this->limit);
+        $lang = $request->translates ?? 'oz';
+        $this->model = $this->model->whereHas('translates', function ($q) use ($lang){
+            $q->where('translates', $lang);
+        });
+
+        return $this->model->with(['category.translates' => function ($q) use ($lang){
+            $q->where('translates', $lang);
+        },
+            'translates' => function ($q) use ($lang) {
+                $q->where('translates', $lang);
+            }
+        ])->orderBy('id', 'desc')->paginate($this->limit);
     }
 
-    public function edit($id)
+    public function edit($id, $request)
     {
-        return $this->model->find($id);
+        $lang = $request->translates ?? 'oz';
+        return $this->model->with(['translates' => function ($q) use ($lang){
+            $q->where('translates', $lang);
+        }])->find($id);
     }
 
     public function create($data)
     {
         try {
             $model = $this->model->create([
-                'name_oz' => $data['name_oz'],
-                'name_uz' => $data['name_uz'],
-                'name_ru' => $data['name_ru'],
-                'name_en' => $data['name_en']??null,
-                'description_oz' => $data['description_oz'],
-                'description_uz' => $data['description_uz'],
-                'description_ru' => $data['description_ru'],
-                'description_en' => $data['description_en']??null,
-                'images' => $this->uploads($data['image'], 'book'),
                 'status' => $data['status'],
-                'files' => $this->fileUploads($data['file'], 'book'),
                 'category_id' => $data['category_id'],
-                'author_oz' => $data['author_oz'],
-                'author_uz' => $data['author_uz'],
-                'author_ru' => $data['author_ru'],
-                'author_en' => $data['author_en']??null,
-                'type_oz' => $data['type_oz']??null,
-                'type_uz' => $data['type_uz']??null,
-                'type_ru' => $data['type_ru']??null,
-                'type_en' => $data['type_en']??null,
-                'about_oz' => $data['about_oz'],
-                'about_uz' => $data['about_uz'],
-                'about_ru' => $data['about_ru'],
-                'about_en' => $data['about_en']??null,
-                'date' =>  $data['date'],
+                'order' => $data['order'],
+                'slug' => Str::slug($data['name'])
             ]);
+            $model->translates()->create([
+                'name' => $data['name'],
+                'description' => $data['description'],
+                'images' => $this->uploads($data['image'], 'book'),
+                'files' => $this->fileUploads($data['file'], 'book'),
+                'author' => $data['author'],
+                'about' => $data['about'],
+                'date' =>  $data['date'],
+                'translates' => $data['translates'],
+                'book_id' => $model->id
+            ]);
+
             if ($model) {
                 return $model;
             }
@@ -80,7 +89,7 @@ class BooksRepository extends BaseRepository
     public function update($data, $id)
     {
         try {
-            $model = $this->model->find($id);
+            $model = $this->model->findOrFail($id);
             if (isset($data['image']) && !empty($data['image'])) {
                 if ($model->images) {
                     deleteImages($model->images, 'book');
@@ -98,32 +107,22 @@ class BooksRepository extends BaseRepository
                 $files = $model->files;
             }
             $model->update([
-                'name_oz' => $data['name_oz'],
-                'name_uz' => $data['name_uz'],
-                'name_ru' => $data['name_ru'],
-                'name_en' => $data['name_en']??null,
-                'description_oz' => $data['description_oz'],
-                'description_uz' => $data['description_uz'],
-                'description_ru' => $data['description_ru'],
-                'description_en' => $data['description_en']??null,
-                'images' => $images,
                 'status' => $data['status'],
-                'files' => $files,
                 'category_id' => $data['category_id'],
-                'author_oz' => $data['author_oz'],
-                'author_uz' => $data['author_uz'],
-                'author_ru' => $data['author_ru'],
-                'author_en' => $data['author_en']??null,
-                'type_oz' => $data['type_oz']??null,
-                'type_uz' => $data['type_uz']??null,
-                'type_ru' => $data['type_ru']??null,
-                'type_en' => $data['type_en']??null,
-                'about_oz' => $data['about_oz'],
-                'about_uz' => $data['about_uz'],
-                'about_ru' => $data['about_ru'],
-                'about_en' => $data['about_en']??null,
-                'date' =>  $data['date'],
+                'slug' => $data['name'],
+                'order' => $data['order']
+            ]);
 
+            $model->translates()->updateOrCreate([
+                'translates' => $data['translates'],
+                ],[
+                'name' => $data['name'],
+                'description' => $data['description'],
+                'images' => $images,
+                'files' => $files,
+                'author' => $data['author'],
+                'about' => $data['about'],
+                'date' =>  $data['date'],
             ]);
 
             if ($model) {
@@ -154,8 +153,8 @@ class BooksRepository extends BaseRepository
 
     public function download($id)
     {
-        $model = $this->model->find($id);
-        $file = basename($model->files);
+        $model = $this->model->with('translates')->find($id);
+        $file = basename($model->translates->first()->files);
         $path = public_path('files/book/'.$file);
         return response()->download($path);
     }

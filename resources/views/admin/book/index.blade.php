@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Kitoblar</h1>
+                    <h1>Kinomutolaa</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -26,7 +26,7 @@
             @endif
             <div class="card card-info">
                 <div class="card-header">
-                    <h3 class="card-title">Kitoblar <i class="fas fa-users"></i></h3>
+                    <h3 class="card-title">Kinomutolaa <i class="fas fa-users"></i></h3>
                     <div class="text-right">
                         <a href="{{route('book.create')}}" class="btn btn-success">&plus; Qo'shish</a>
                     </div>
@@ -53,12 +53,16 @@
                                     <select name="category_id" id="category_id" onchange="this.form.submit()" class="form-control">
                                         <option value="">----</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}" {{request('category_id') == $category->id?'selected':''}}>{{$category->name_oz}}</option>
+                                            <option value="{{$category->id}}" {{request('category_id') == $category->id?'selected':''}}>
+                                                @foreach($category->translates as $item)
+                                                {{$item->name}}
+                                                @endforeach
+                                            </option>
                                         @endforeach
                                     </select>
                                 </th>
                                 <th>
-                                    <input type="text" name="name_oz" class="form-control" value="{{request('name_oz')}}">
+                                    <input type="text" name="name" class="form-control" value="{{request('name')}}">
                                 </th>
                                 <th></th>
                                 <th>
@@ -78,14 +82,29 @@
                         @forelse($models as $k => $model)
                         <tr>
                             <td>{{$k + 1}}</td>
-                            <td>{{$model->category->name_oz}}</td>
-                            <td>{{$model->name_oz}}</td>
-                            <td>{{$model->description_oz}}</td>
+                            <td>
+                                @foreach($model->category->translates as $item)
+                                    {{$item->name}}
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach($model->translates as $item)
+                                    {{$item->name}}
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach($model->translates as $item)
+                                    {{$item->description}}
+                                @endforeach
+                            </td>
                             <td>{{$model->status == 1?'Active':'No Active'}}</td>
                             <td>{{$model->created_at}}</td>
                             <td>
                                 <div class="d-flex justify-content-center align-items-center">
-                                    <a href="{{$model->files}}" class="btn btn-info mr-2" target="_blank"><i class="fas fa-eye"></i></a>
+                                    <a href="@foreach($model->translates as $item)
+                                                {{$item->files}}
+                                             @endforeach
+                                        " class="btn btn-info mr-2" target="_blank"><i class="fas fa-eye"></i></a>
                                     <a href="{{route('download', $model->id)}}" class="btn btn-primary"><i class="fas fa-download"></i></a>
                                 </div>
                             </td>
