@@ -169,7 +169,9 @@ class FilmographyController extends Controller
     public function edit($id, Request $request)
     {
         $translates = $request['translates'] ?? 'oz';
-        $categories = PersonCategory::where('status', true)->where('type', 'cinema_catalog')->get();
+        $categories = PersonCategory::where('status', true)->where('type', 'cinema_catalog')->with(['translates' => function ($q) use ($translates){
+            $q->where('translates', $translates);
+        }])->get();
         $model = Filmography::where('id', $id)->with(['translations' => function($q) use ($translates){
             $q->where('translates', $translates);
         }])->first();
