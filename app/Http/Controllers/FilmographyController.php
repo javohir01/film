@@ -16,32 +16,21 @@ class FilmographyController extends Controller
         $per_page = $result['per_page']??6;
         if (isset($result['category_id']) && !empty($result['category_id'])) {
             $params = Filmography::where('category_id', $result['category_id'])->where('status', 1)
-<<<<<<< HEAD
                 ->with(['translations' => function ($q) use ($lang){
-=======
-                ->with(['translates' => function ($q) use ($lang){
->>>>>>> 8e5eddbf40d40af931abb267bf7e48e991065835
                     $q->where('translates' ,$lang);
                 }])
                 ->orderBy('created_at', 'desc')
                 ->paginate($per_page);
         }else {
             $params = Filmography::where('status', 1)
-<<<<<<< HEAD
                 ->with(['translations' => function ($q) use ($lang){
-=======
-                ->with(['translates' => function ($q) use ($lang){
->>>>>>> 8e5eddbf40d40af931abb267bf7e48e991065835
                     $q->where('translates' ,$lang);
                 }])
                 ->orderBy('created_at', 'desc')
                 ->paginate($per_page);
         }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 8e5eddbf40d40af931abb267bf7e48e991065835
         if ($params) {
             return successJson($params, 'ok');
         }
