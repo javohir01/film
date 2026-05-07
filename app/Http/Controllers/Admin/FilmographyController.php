@@ -66,9 +66,9 @@ class FilmographyController extends Controller
     public function create(Request $request)
     {
         $translates = $request->all();
-        $categories = PersonCategory::where('status', true)->where('type', 'cinema_catalog')->whereHas('translates', function ($q) use ($translates){
+        $categories = PersonCategory::where('status', true)->where('type', 'cinema_catalog')->with(['translates' => function ($q) use ($translates){
             $q->where('translates', $translates);
-        })->get();
+        }])->get();
         return view('admin.filmography.create', compact('categories'));
     }
 
