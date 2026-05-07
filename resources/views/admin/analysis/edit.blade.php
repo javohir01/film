@@ -57,7 +57,7 @@
 
                         <div class="form-group">
                             <label for="name">{{labels('name')}}</label>
-                            <input type="text" class="form-control" name="name" value="{{$model->translations->first()?->name}}">
+                            <input type="text" class="form-control" name="name" value="{{$model->translates->first()?->name}}">
                             <small class="text-danger">{{$errors->first('name')}}</small>
                         </div>
 
@@ -87,14 +87,14 @@
                         <div class="form-group">
                             <label for="description">{{labels('description')}}</label>
                             <textarea name="description" id="" cols="30" rows="5"
-                                      class="form-control">{{$model->translations->first()?->description}}</textarea>
+                                      class="form-control">{{$model->translates->first()?->description}}</textarea>
                             <small class="text-danger">{{$errors->first('description')}}</small>
                         </div>
 
                         <div class="form-group">
                             <label for="content">{{labels('content')}}</label>
                             <textarea name="content" id="" cols="30" rows="10"
-                                      class="form-control textarea">{{$model->translations->first()?->content}}</textarea>
+                                      class="form-control textarea">{{$model->translates->first()?->content}}</textarea>
                             <small class="text-danger">{{$errors->first('content')}}</small>
                         </div>
 

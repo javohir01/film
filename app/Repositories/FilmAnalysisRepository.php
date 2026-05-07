@@ -37,21 +37,21 @@ class FilmAnalysisRepository extends BaseRepository
             $this->model = $this->model->where('status', $request->status);
         }
         $lang = $request->translates ?? 'oz';
-        $model = $this->model->whereHas('translations', function ($q) use ($lang) {
+        $model = $this->model->whereHas('translates', function ($q) use ($lang) {
             $q->where('translates', $lang);
         });
 
         return $model->with([
             'category.translates' => function ($q) use ($lang) {
             $q->where('translates', $lang);
-        }, 'translations' => function ($q) use ($lang) {
+        }, 'translates' => function ($q) use ($lang) {
             $q->where('translates', $lang);
         }])->orderBy('id', 'desc')->paginate($this->limit)->appends($request->query());
     }
 
     public function findById($id, $translates)
     {
-        return $this->model->with(['translations' => function ($q) use ($translates){
+        return $this->model->with(['translates' => function ($q) use ($translates){
             $q->where('translates', $translates);
         }])->find($id);
     }
@@ -109,7 +109,7 @@ class FilmAnalysisRepository extends BaseRepository
 
     public function update($data, $id)
     {
-        $item = $this->model->find($id);
+        $item = $this->model->findOrFail($id);
         if (isset($data['image']) && !empty($data['image'])) {
             if ($item->images) {
                 deleteImages($item->images, 'analysis');
@@ -118,7 +118,7 @@ class FilmAnalysisRepository extends BaseRepository
         } else {
             $images = $item->images;
         }
-        $model = $item->update([
+        $item->update([
             'category_id' => $data['category_id'],
             'status' => $data['status'],
             'images' => $images,
@@ -127,7 +127,7 @@ class FilmAnalysisRepository extends BaseRepository
             'slug' => Str::slug($data['name'])
         ]);
 
-        $model->translates()->updateOrCreate([
+        $item->translates()->updateOrCreate([
             'translates' => $data['translates']
            ],[
             'name' => $data['name'],
@@ -136,8 +136,8 @@ class FilmAnalysisRepository extends BaseRepository
             'content' => contentByDomDocment($data['content'], 'analysis'),
         ]);
 
-        if ($model) {
-            return $model;
+        if ($item) {
+            return $item;
         }
         return false;
     }

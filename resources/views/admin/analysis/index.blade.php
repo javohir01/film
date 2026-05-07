@@ -82,19 +82,19 @@
                             <tr>
                                 <td>{{$k + 1}}</td>
                                 <td>
-                                    @foreach($model->translations as $translates)
+                                    @foreach($model->translates as $translates)
                                     {{$translates->name}}
                                     @endforeach
                                 </td>
                                 <td>{{$model->category->translates->first()->name}}</td>
                                 <td>
-                                    @foreach($model->translations as $translates)
+                                    @foreach($model->translates as $translates)
                                     {{$translates->description}}
                                     @endforeach
                                 </td>
                                 <td>{{$model->status == 1?'Active':'No Active'}}</td>
                                 <td>
-                                    @foreach($model->translations as $translates)
+                                    @foreach($model->translates as $translates)
                                         {{$translates->created_at}}
                                     @endforeach</td>
                                 <td>

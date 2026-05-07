@@ -15,13 +15,17 @@ class FilmAnalysisController extends Controller
         $per_page = $result['per_page']??6;
         if (isset($params['category_id']) && !empty($params['category_id'])) {
             $items = FilmAnalysis::where('category_id', $params['category_id'])
+                ->with(['translates' => function ($q) use ($lang){
+                    $q->where('translates', $lang);
+                }])
                 ->orderBy('created_at', 'desc')
-                ->select('id','category_id','name_'.$lang.' as name','description_'.$lang.' as description','images','view_count','created_at','updated_at')
                 ->paginate($per_page);
         }else {
             $items = FilmAnalysis::where('status', 1)
+                ->with(['translates' => function ($q) use ($lang){
+                    $q->where('translates', $lang);
+                }])
                 ->orderBy('created_at', 'desc')
-                ->select('id','category_id','name_'.$lang.' as name','description_'.$lang.' as description','images','view_count','created_at','updated_at')
                 ->paginate($per_page);
         }
         if ($items) {
@@ -35,8 +39,9 @@ class FilmAnalysisController extends Controller
     {
         $lang = $request->header('lang', 'oz');
         $items = FilmAnalysis::where('id', $id)->orderBy('id', 'desc')
-            ->select('id','category_id','name_'.$lang.' as name','description_'.$lang.' as description',
-                'content_'.$lang.' as content','images','view_count','created_at','updated_at')
+            ->with(['translates' => function ($q) use ($lang){
+                $q->where('translates', $lang);
+            }])
             ->first();
         if ($items)
         {
