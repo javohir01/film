@@ -58,7 +58,7 @@ class BookController extends Controller
     }
 
     public function fileDownload($id){
-        $model = Books::with('translates')->find();
+        $model = Books::with('translates')->find($id);
         $file_name = basename($model->translates->files);
         $path = public_path('files/book/'.$file_name);
         return response()->download($path);
