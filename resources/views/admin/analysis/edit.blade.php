@@ -45,7 +45,11 @@
                                 <option value="">----</option>
                                 @foreach($categories as $category)
                                     <option
-                                        value="{{$category->id}}" {{$model->category_id == $category->id?'selected':''}}>{{$category->name}}</option>
+                                        value="{{$category->id}}" {{$model->category_id == $category->id?'selected':''}}>
+                                        @foreach($category->translates as $item)
+                                        {{$item->name}}
+                                        @endforeach
+                                    </option>
                                 @endforeach
                             </select>
                             <small class="text-danger">{{$errors->first('category_id')}}</small>
@@ -104,7 +108,7 @@
 
                         <div class="form-group">
                             <label for="">{{labels('order')}}</label>
-                            <input type="text" class="form-control" name="'order" value="{{$model->order}}">
+                            <input type="text" class="form-control" name="order" value="{{$model->order}}">
                             <small class="text-danger">{{$errors->first('order')}}</small>
                         </div>
 

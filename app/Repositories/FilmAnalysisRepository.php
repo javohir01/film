@@ -42,8 +42,8 @@ class FilmAnalysisRepository extends BaseRepository
         });
 
         return $model->with([
-            'category' => function ($q) use ($lang) {
-            $q->select('id', 'name_'.$lang.' as name');
+            'category.translates' => function ($q) use ($lang) {
+            $q->where('translates', $lang);
         }, 'translations' => function ($q) use ($lang) {
             $q->where('translates', $lang);
         }])->orderBy('id', 'desc')->paginate($this->limit)->appends($request->query());
@@ -67,7 +67,7 @@ class FilmAnalysisRepository extends BaseRepository
             'telegram_status' => $data['telegram_status'] ?? false
         ]);
 
-        $model->translations()->create([
+        $model->translates()->create([
             'film_analysis_id' => $model->id,
             'name' => $data['name'],
             'description' => $data['description'],
@@ -123,16 +123,19 @@ class FilmAnalysisRepository extends BaseRepository
             'status' => $data['status'],
             'images' => $images,
             'order' => $data['order'],
-            'telegram_status' => $data['telegram_status'] ?? false
+            'telegram_status' => isset($data['telegram_status']) ? $data['telegram_status'] : false,
+            'slug' => Str::slug($data['name'])
         ]);
 
-        $model->translations()->updateOrCreate([
+        $model->translates()->updateOrCreate([
             'translates' => $data['translates']
            ],[
             'name' => $data['name'],
             'description' => $data['description'],
+
             'content' => contentByDomDocment($data['content'], 'analysis'),
         ]);
+
         if ($model) {
             return $model;
         }

@@ -53,7 +53,11 @@
                                     <select name="category_id" id="" class="form-control" onchange="this.form.submit()">
                                         <option value="">---</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}" {{$category->id == request('category_id')?'selected':''}}>{{$category->name_oz}}</option>
+                                            <option value="{{$category->id}}" {{$category->id == request('category_id')?'selected':''}}>
+                                                @foreach($category->translates as $item)
+                                                    {{$item->name}}
+                                                @endforeach
+                                            </option>
                                         @endforeach
                                     </select>
                                 </th>
@@ -77,7 +81,7 @@
                         @forelse($models as $k=>$model)
                             <tr>
                                 <td>{{$k + 1}}</td>
-                                <td>{{$model->category->name}}</td>
+                                <td>{{$model->category->translates->first()->name}}</td>
                                 <td>
                                     @foreach($model['translations'] as $translate)
                                         {{$translate->name}}

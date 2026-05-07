@@ -50,13 +50,17 @@
                                 <button type="submit" class="d-none"></button>
                                 <th></th>
                                 <th>
-                                    <input type="text" name="name_oz" class="form-control" value="{{request('name_oz')}}" placeholder="Tahlil Nomi">
+                                    <input type="text" name="name" class="form-control" value="{{request('name')}}" placeholder="Tahlil Nomi">
                                 </th>
                                 <th>
                                     <select name="category_id" id="" class="form-control" onchange="this.form.submit()">
                                         <option value="">---</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}" {{request('category_id') == $category->id?'selected':''}}>{{$category->name}}</option>
+                                            <option value="{{$category->id}}" {{request('category_id') == $category->id?'selected':''}}>
+                                                @foreach($category->translates as $item)
+                                                {{$item->name}}
+                                                @endforeach
+                                            </option>
                                         @endforeach
                                     </select>
                                 </th>
@@ -82,7 +86,7 @@
                                     {{$translates->name}}
                                     @endforeach
                                 </td>
-                                <td>{{$model->category->name}}</td>
+                                <td>{{$model->category->translates->first()->name}}</td>
                                 <td>
                                     @foreach($model->translations as $translates)
                                     {{$translates->description}}

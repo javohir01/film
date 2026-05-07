@@ -35,7 +35,11 @@
                                 <option value="">---</option>
                                 @foreach($categories as $category)
                                     <option
-                                        value="{{$category->id}}" {{request('category_id') == $category->id?'selected':''}}>{{$category->name}}</option>
+                                        value="{{$category->id}}" {{request('category_id') == $category->id?'selected':''}}>
+                                        @foreach($category->translates as $item)
+                                        {{$item->name}}
+                                        @endforeach
+                                    </option>
                                 @endforeach
                             </select>
                             <small class="text-danger">{{$errors->first('analysis_category_id')}}</small>

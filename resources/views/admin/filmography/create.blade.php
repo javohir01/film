@@ -36,7 +36,11 @@
                                     <select name="category_id" id="" class="form-control @error('category_id') border-danger @enderror">
                                         <option value="">---</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->name_oz}}</option>
+                                            <option value="{{$category->id}}">
+                                                @foreach($category->translates as $item)
+                                                    {{$item->name}}
+                                                @endforeach
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>

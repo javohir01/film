@@ -29,7 +29,7 @@ class FilmAnalysisRequest extends FormRequest
             'description' => 'required',
             'content' => 'required',
             'status' => 'required|integer',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'telegram_status' => 'nullable',
             'order' => 'required',
             'translates' => 'required'

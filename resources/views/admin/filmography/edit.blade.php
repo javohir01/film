@@ -38,7 +38,9 @@
                                 @foreach($categories as $category)
                                     <option
                                         value="{{$category->id}}" {{$category->id == $model->category_id?'selected':''}}>
-                                        {{$category->name}}
+                                        @foreach($category->translates as $item)
+                                            {{$item->name}}
+                                        @endforeach
                                     </option>
                                 @endforeach
                             </select>

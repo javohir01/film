@@ -45,11 +45,13 @@ class FilmographyController extends Controller
         $model = $model->whereHas('translations', function ($q) use ($lang){
             $q->where('translates', $lang);
         });
-        $categories = PersonCategory::where('status', 1)->where('type', 'filmography')->select('id','name_oz')->get();
+        $categories = PersonCategory::where('status', 1)->where('type', 'cinema_catalog')->with(['translates' => function ($q) use ($lang){
+            $q->where('translates', $lang);
+        }])->get();
         $models = $model->with(['translations' => function($q) use ($lang){
             $q->where('translates' , $lang);
-        }, 'category' => function($q) use ($lang){
-            $q->select('id', 'name_'.$lang.' as name');
+        }, 'category.translates' => function($q) use ($lang){
+            $q->where('translates', $lang);
         }])
             ->orderBy('created_at', 'desc')
             ->paginate(20);
@@ -61,9 +63,12 @@ class FilmographyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $categories = PersonCategory::where('status', true)->where('type', 'filmography')->select('id','name_oz')->get();
+        $translates = $request->all();
+        $categories = PersonCategory::where('status', true)->where('type', 'cinema_catalog')->whereHas('translates', function ($q) use ($translates){
+            $q->where('translates', $translates);
+        })->get();
         return view('admin.filmography.create', compact('categories'));
     }
 
@@ -82,7 +87,7 @@ class FilmographyController extends Controller
             'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
             'status' => 'required|boolean',
             'category_id' => 'required',
-//            'telegram_status' => 'nullable',
+            'telegram_status' => 'nullable',
             'translates' => 'required',
             'order' => 'required'
         ]);
@@ -90,12 +95,17 @@ class FilmographyController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         $data = $request->all();
+        if (isset($data->telegram_status)) {
+            $telegram = $data['telegram_status'];
+        }else {
+            $telegram = false;
+        }
         $model = Filmography::create([
             'slug' => Str::slug($data['name']),
             'images' => $this->uploads($data['image'], 'filmography'),
             'status' => $data['status'],
             'category_id' => $data['category_id'],
-//            'telegram_status' => $data['telegram_status'],
+            'telegram_status' => $telegram,
             'order' => $request['order']
         ]);
 
@@ -159,7 +169,7 @@ class FilmographyController extends Controller
     public function edit($id, Request $request)
     {
         $translates = $request['translates'] ?? 'oz';
-        $categories = PersonCategory::where('status', true)->where('type', 'filmography')->select('id','name_'.$translates. ' as name')->get();
+        $categories = PersonCategory::where('status', true)->where('type', 'cinema_catalog')->get();
         $model = Filmography::where('id', $id)->with(['translations' => function($q) use ($translates){
             $q->where('translates', $translates);
         }])->first();
@@ -182,7 +192,7 @@ class FilmographyController extends Controller
             'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'status' => 'required|boolean',
             'category_id' => 'required',
-//            'telegram_status' => 'nullable',
+            'telegram_status' => 'nullable',
             'order' => 'required'
         ]);
         if ($validator->fails()) {
@@ -203,7 +213,8 @@ class FilmographyController extends Controller
             'category_id' => $data['category_id'],
             'images' => $images,
             'status' => $data['status'],
-            'order' => $data['order']
+            'order' => $data['order'],
+            'telegram_status' => isset($data['telegram_status']) ? $data['telegram_status'] : false
         ]);
         $model->translations()->updateOrCreate([
                 'translates' => $data['translates']
