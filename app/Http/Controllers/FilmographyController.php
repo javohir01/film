@@ -41,7 +41,7 @@ class FilmographyController extends Controller
     {
         $lang = $request->header('lang', 'oz');
         $data = Filmography::where('id', $id)
-            ->with(['translates' => function ($q) use ($lang){
+            ->with(['translations' => function ($q) use ($lang){
                 $q->where('translates' ,$lang);
             }])
             ->first();
