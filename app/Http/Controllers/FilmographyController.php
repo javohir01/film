@@ -16,14 +16,14 @@ class FilmographyController extends Controller
         $per_page = $result['per_page']??6;
         if (isset($result['category_id']) && !empty($result['category_id'])) {
             $params = Filmography::where('category_id', $result['category_id'])->where('status', 1)
-                ->with(['translates' => function ($q) use ($lang){
+                ->with(['translations' => function ($q) use ($lang){
                     $q->where('translates' ,$lang);
                 }])
                 ->orderBy('created_at', 'desc')
                 ->paginate($per_page);
         }else {
             $params = Filmography::where('status', 1)
-                ->with(['translates' => function ($q) use ($lang){
+                ->with(['translations' => function ($q) use ($lang){
                     $q->where('translates' ,$lang);
                 }])
                 ->orderBy('created_at', 'desc')
