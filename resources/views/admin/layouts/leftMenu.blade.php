@@ -53,26 +53,26 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
+                    <a href="{{route('kino_gid.index')}}" class="nav-link">
+                        <i class="far fa-circle"></i>
                         <p class="text">Kinogid</p>
-                        <i class="right fas fa-angle-left"></i>
+                        <span class="badge badge-primary right"></span>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('interview.index')}}" class="nav-link {{(request()->is('admin/interview'))?'active':''}}">
-                                <i class="nav-icon far fa-circle"></i>
-                                Intervyu
-                            </a>
-                        </li>
+{{--                    <ul class="nav nav-treeview">--}}
+{{--                        <li class="nav-item">--}}
+{{--                            <a href="{{route('interview.index')}}" class="nav-link {{(request()->is('admin/interview'))?'active':''}}">--}}
+{{--                                <i class="nav-icon far fa-circle"></i>--}}
+{{--                                Intervyu--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
 
-                        <li class="nav-item">
-                            <a href="{{route('interview_peoples.index')}}" class="nav-link {{(request()->is('admin/interview_peoples'))?'active':''}}">
-                                <i class="nav-icon far fa-circle"></i>
-                                Suxbat o'tkaziladigan odamlar
-                            </a>
-                        </li>
-                    </ul>
+{{--                        <li class="nav-item">--}}
+{{--                            <a href="{{route('interview_peoples.index')}}" class="nav-link {{(request()->is('admin/interview_peoples'))?'active':''}}">--}}
+{{--                                <i class="nav-icon far fa-circle"></i>--}}
+{{--                                Suxbat o'tkaziladigan odamlar--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    </ul>--}}
                 </li>
 {{--                <li class="nav-item">--}}
 {{--                    <a href="{{route('person.index')}}" class="nav-link {{(request()->is('admin/person*'))?'active':''}}">--}}

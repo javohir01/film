@@ -20,6 +20,7 @@ class AphorismController extends Controller
      */
     public function index()
     {
+
         $models = $this->repo->index($this->request);
         return view('admin.aphorism.index', compact('models'));
     }
