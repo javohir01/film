@@ -33,6 +33,7 @@ Route::get('book', [\App\Http\Controllers\BookController::class, 'index'])->name
 Route::get('categories', [\App\Http\Controllers\CategoriesController::class, 'index'])->name('category');
 Route::get('search', [\App\Http\Controllers\SearchController::class, 'search']);
 Route::post('/telegram/webhook', [\App\Http\Controllers\TelegramController::class, 'handle']);
+Route::get('kino_gid', [\App\Http\Controllers\KinogidController::class, 'index']);
 
 Route::get('aphorism', [\App\Http\Controllers\AphorismController::class, 'index'])->name('aphorism');
 Route::get('news/{id}', [\App\Http\Controllers\NewsController::class, 'show'])->name('news.api.show')->middleware('view_count');
@@ -43,6 +44,7 @@ Route::get('persons/{id}', [\App\Http\Controllers\PersonDirectorController::clas
 Route::get('dictionary/{id}', [\App\Http\Controllers\DictionaryController::class, 'show'])->name('dictionary.api.show');
 Route::get('filmography/{id}', [\App\Http\Controllers\FilmographyController::class, 'show'])->name('filmography.api.show');
 Route::get('book/{id}', [\App\Http\Controllers\BookController::class, 'show'])->name('book.api.show');
+Route::get('kino_gid/{id}', [\App\Http\Controllers\KinogidController::class, 'show']);
 
 Route::group(['middleware' => 'ApiAuth'], function (){
 //    Route::get('aphorism', [\App\Http\Controllers\AphorismController::class, 'index'])->name('aphorism');
