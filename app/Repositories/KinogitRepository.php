@@ -17,6 +17,7 @@ class KinogitRepository extends BaseRepository
     public function index($request)
     {
         $lang = $request['translates'] ?? 'oz';
+
         if (isset($request->full_name) && !empty($request->full_name))
         {
             $full_name = $request->full_name;
@@ -69,21 +70,20 @@ class KinogitRepository extends BaseRepository
 
     public function update($data, $id)
     {
-        $item = $this->model->findOrFail($id);
+        $item = $this->model->with('translates')->findOrFail($id);
         if (isset($data['image']) && !empty($data['image'])) {
             if ($item->images) {
                 deleteImages($item->images, 'kinogit');
             }
             $images = $this->uploads($data['image'], 'kinogit');
         } else {
-            $images = $item->images;
+            $images = $item->translates->first()->image;
         }
         $item->update([
             'category_id' => $data['category_id'],
             'status' => $data['status'],
-            'images' => $images,
             'order' => $data['order'],
-            'telegram_status' => isset($data['telegram_status']) ? $data['telegram_status'] : false,
+//            'telegram_status' => isset($data['telegram_status']) ? $data['telegram_status'] : false,
             'slug' => Str::slug($data['name'])
         ]);
 
@@ -93,6 +93,7 @@ class KinogitRepository extends BaseRepository
             'name' => $data['name'],
             'description' => $data['description'],
             'content' => contentByDomDocment($data['content'], 'kinogit'),
+            'image' => $images,
         ]);
 
         if ($item) {

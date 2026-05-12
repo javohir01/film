@@ -38,7 +38,6 @@
                         <tr>
                             <th>#</th>
                             <th>Kategoriya</th>
-                            <th>F.I.O</th>
                             <th>Nomi</th>
                             <th>Qisqacha ma'lumot</th>
                             <th>Status</th>
@@ -64,7 +63,6 @@
                                 </th>
                                 <th></th>
                                 <th></th>
-                                <th></th>
                                 <th>
                                     <select name="status" id="" class="form-control" onchange="this.form.submit()">
                                         <option value="">---</option>
@@ -81,20 +79,29 @@
                         @forelse($models as $k => $model)
                             <tr>
                                 <td>{{$k + 1}}</td>
+                                <th>
+                                    @foreach($categories as $category)
+                                        @if($category->id == $model->category_id)
+                                            @foreach($category->translates as $item)
+                                                {{$item->name}}
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+                                </th>
                                 <td>
                                     @foreach($model['translates'] as $translate)
                                         {{$translate->name}}
                                     @endforeach
                                 </td>
                                 <td> @foreach($model['translates'] as $translate)
-                                        {{$translate->description}}
+                                        {{$translate->name}}
                                     @endforeach</td>
                                 <td>{{$model->status == 1?'Active':'No Active'}}</td>
                                 <td>{{$model->created_at}}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <a href="{{route('interview.edit', $model->id)}}" class="btn btn-info mr-1"><i class="fa fa-edit"></i></a>
-                                        <form action="{{ route('interview.destroy', $model->id) }}" method="post" id="deleteItem-{{$model->id}}">
+                                        <a href="{{route('kino_gid.edit', $model->id)}}" class="btn btn-info mr-1"><i class="fa fa-edit"></i></a>
+                                        <form action="{{ route('kino_gid.destroy', $model->id) }}" method="post" id="deleteItem-{{$model->id}}">
                                             @csrf
                                             @method('delete')
                                         </form>

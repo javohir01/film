@@ -94,7 +94,7 @@ class KinogitController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(KinogidRequest $request, $id)
     {
         $model = $this->repo->update($request->validated(), $id);
         if ($model)

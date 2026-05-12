@@ -49,7 +49,7 @@
                         <div class="form-group required">
                             <label for="name">{{labels('name')}}</label>
                             <input type="text" class="form-control @error('name') border-danger @enderror" name="name"
-                                   value="{{$model->translations->first()?->name}}">
+                                   value="{{$model->translates->first()?->name}}">
                             <small class="text-danger">{{$errors->first('name')}}</small>
                         </div>
 
@@ -63,14 +63,14 @@
                         <div class="form-group required">
                             <label for="description">{{labels('description')}}</label>
                             <textarea name="description" id="" cols="30" rows="5"
-                                      class="form-control @error('description') border-danger @enderror">{{$model->translations->first()?->description}}</textarea>
+                                      class="form-control @error('description') border-danger @enderror">{{$model->translates->first()?->description}}</textarea>
                             <small class="text-danger">{{$errors->first('description')}}</small>
                         </div>
 
                         <div class="form-group required">
                             <label for="content">{{labels('content')}}t</label>
                             <textarea name="content" id="" cols="30" rows="10"
-                                      class="form-control textarea @error('content') border-danger @enderror">{{$model->translations->first()?->content}}</textarea>
+                                      class="form-control textarea @error('content') border-danger @enderror">{{$model->translates->first()?->content}}</textarea>
                             <small class="text-danger">{{$errors->first('content')}}</small>
                         </div>
 

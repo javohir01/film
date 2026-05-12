@@ -30,7 +30,7 @@ class KinogidRequest extends FormRequest
             'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'status' => 'required|boolean',
             'category_id' => 'required',
-            'telegram_status' => 'nullable',
+//            'telegram_status' => 'nullable',
             'order' => 'required',
             'translates' => 'required'
         ];
