@@ -49,6 +49,7 @@ class FilmographyController extends Controller
             $q->where('translates', $lang);
         }])->get();
         $models = $model->with(['translations' => function($q) use ($lang){
+            
             $q->where('translates' , $lang);
         }, 'category.translates' => function($q) use ($lang){
             $q->where('translates', $lang);
