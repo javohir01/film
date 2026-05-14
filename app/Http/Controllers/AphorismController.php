@@ -8,9 +8,12 @@ use Illuminate\Http\Request;
 
 class AphorismController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $models = Aphorism::where('status', true)->with('calendar', 'translations')->latest()->first();
+        $translates = $request->header('lang') ?? 'oz';
+        $models = Aphorism::where('status', true)->with(['calendar', 'translations' => function ($q) use ($translates) {
+            $q->where('translates', $translates);
+        }])->latest()->first();
         if (!$models) {
             return errorJson('ok', 400);
         }

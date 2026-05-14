@@ -16,14 +16,16 @@ class AphorismResource extends JsonResource
      */
     public function toArray($request)
     {
-        $lang = $request->header('lang', 'oz');
         return [
             'id' => $this->id,
-            'full_name' => $this->getTranslates("full_name", $lang),
             'images' => $this->images,
-            'description' => $this->getTranslates("description", $lang),
             'created_at' => $this->created_at,
-            'calendar' => CalendarResource::collection($this->calendar),
+            'translates' => [
+                'full_name' => $this->translations->first()->full_name ?? null,
+                'description' => $this->translations->first()->description ?? null,
+                'calendar' => $this->translations->first()->calendar ?? null,
+                'translates' => $this->translations->first()->translates ?? null
+            ]
         ];
     }
 }
