@@ -19,7 +19,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'] ,function (){
     Route::get('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
     Route::resources([
         'aphorism' => \App\Http\Controllers\Admin\AphorismController::class,
-//        'news' => \App\Http\Controllers\Admin\NewsController::class,
+        'news' => \App\Http\Controllers\Admin\NewsController::class,
         'film_digest' => \App\Http\Controllers\Admin\PremiereController::class,
 //        'interview' => \App\Http\Controllers\Admin\InterviewController::class,
 //        'interview_peoples' => \App\Http\Controllers\Admin\InterviewPeoplesController::class,
