@@ -45,11 +45,11 @@ class FilmographyController extends Controller
         $model = $model->whereHas('translations', function ($q) use ($lang){
             $q->where('translates', $lang);
         });
-        $categories = PersonCategory::where('status', 1)->where('type', 'cinema_catalog')->with(['translates' => function ($q) use ($lang){
+        $categories = PersonCategory::where('status', 1)->where('type', 'film_catalogs')->with(['translates' => function ($q) use ($lang){
             $q->where('translates', $lang);
         }])->get();
         $models = $model->with(['translations' => function($q) use ($lang){
-            
+
             $q->where('translates' , $lang);
         }, 'category.translates' => function($q) use ($lang){
             $q->where('translates', $lang);
@@ -67,7 +67,7 @@ class FilmographyController extends Controller
     public function create(Request $request)
     {
         $translates = $request->all();
-        $categories = PersonCategory::where('status', true)->where('type', 'cinema_catalog')->with(['translates' => function ($q) use ($translates){
+        $categories = PersonCategory::where('status', true)->where('type', 'film_catalogs')->with(['translates' => function ($q) use ($translates){
             $q->where('translates', $translates);
         }])->get();
         return view('admin.filmography.create', compact('categories'));
@@ -170,7 +170,7 @@ class FilmographyController extends Controller
     public function edit($id, Request $request)
     {
         $translates = $request['translates'] ?? 'oz';
-        $categories = PersonCategory::where('status', true)->where('type', 'cinema_catalog')->with(['translates' => function ($q) use ($translates){
+        $categories = PersonCategory::where('status', true)->where('type', 'film_catalogs')->with(['translates' => function ($q) use ($translates){
             $q->where('translates', $translates);
         }])->get();
         $model = Filmography::where('id', $id)->with(['translations' => function($q) use ($translates){
