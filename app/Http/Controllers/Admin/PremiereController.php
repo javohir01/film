@@ -20,7 +20,7 @@ class PremiereController extends Controller
     public function index()
     {
         $lang = $this->request['translates'] ?? 'oz';
-        $categories = PersonCategory::where('status', true)->where('type', 'film_digest')->with(['translates' => function($q) use ($lang){
+        $categories = PersonCategory::where('status', true)->where('type', 'film_digests')->with(['translates' => function($q) use ($lang){
             $q->where('translates', $lang);
         }])->get();
         $models = $this->repo->index($this->request);
@@ -35,7 +35,7 @@ class PremiereController extends Controller
     public function create()
     {
         $lang = $this->request['translates'] ?? 'oz';
-        $categories = PersonCategory::where('status', true)->where('type', 'film_digest')->with(['translates' => function($q) use ($lang){
+        $categories = PersonCategory::where('status', true)->where('type', 'film_digests')->with(['translates' => function($q) use ($lang){
             $q->where('translates', $lang);
         }])->get();
         return view('admin.premiere.create', compact('categories'));
@@ -79,7 +79,7 @@ class PremiereController extends Controller
     public function edit($id)
     {
         $lang = $this->request['translates'] ?? 'oz';
-        $categories = PersonCategory::where('status', true)->where('type', 'film_digest')->with(['translates' => function($q) use ($lang){
+        $categories = PersonCategory::where('status', true)->where('type', 'film_digests')->with(['translates' => function($q) use ($lang){
             $q->where('translates', $lang);
         }])->get();
         $model = $this->repo->findById($id, $this->request);
