@@ -24,7 +24,7 @@ Route::get('film_digests', [\App\Http\Controllers\PremiereController::class, 'in
 Route::get('film_diagnostics', [\App\Http\Controllers\FilmAnalysisController::class, 'index'])->name('movie_analysis.api.index');
 Route::get('film_catalogs', [\App\Http\Controllers\FilmographyController::class, 'index'])->name('filmography.api.index');
 Route::get('film_grids', [\App\Http\Controllers\KinogidController::class, 'index']);
-Route::get('book', [\App\Http\Controllers\BookController::class, 'index'])->name('book.api.index');
+Route::get('books', [\App\Http\Controllers\BookController::class, 'index'])->name('book.api.index');
 Route::get('categories', [\App\Http\Controllers\CategoriesController::class, 'index'])->name('category');
 Route::get('search', [\App\Http\Controllers\SearchController::class, 'search']);
 Route::post('/telegram/webhook', [\App\Http\Controllers\TelegramController::class, 'handle']);
@@ -41,7 +41,7 @@ Route::get('film_digest/{id}', [\App\Http\Controllers\PremiereController::class,
 Route::get('movie_diagnosis/{id}', [\App\Http\Controllers\FilmAnalysisController::class,'show'])->name('movie_diagnosis.api.show');
 Route::get('cinema_catalog/{id}', [\App\Http\Controllers\FilmographyController::class, 'show'])->name('cinema_catalog.api.show');
 Route::get('movie_guide/{id}', [\App\Http\Controllers\KinogidController::class, 'show'])->name('movie_guide.api.show');
-Route::get('book/{id}', [\App\Http\Controllers\BookController::class, 'show'])->name('book.api.show');
+Route::get('books/{id}', [\App\Http\Controllers\BookController::class, 'show'])->name('book.api.show');
 
 //Route::get('news/{id}', [\App\Http\Controllers\NewsController::class, 'show'])->name('news.api.show')->middleware('view_count');
 //Route::get('interview/{id}', [\App\Http\Controllers\InterviewController::class, 'show'])->name('interview.api.show');
