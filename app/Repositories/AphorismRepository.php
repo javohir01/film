@@ -97,7 +97,7 @@ class AphorismRepository extends BaseRepository
 
     public function delete($id, $translate = null)
     {
-        $model = $this->model->whereIn($id)->first();
+        $model = $this->model->whereId($id)->first();
         if ($model->images)
         {
             deleteImages($model->images, 'aphorism');
