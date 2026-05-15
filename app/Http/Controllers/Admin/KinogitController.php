@@ -20,7 +20,7 @@ class KinogitController extends Controller
     public function index()
     {
         $translates = $this->request->translates ?? 'oz';
-        $categories = PersonCategory::where('status', 1)->where('type', 'movie_guide')->with(['translates' => function ($q) use ($translates){
+        $categories = PersonCategory::where('status', 1)->where('type', 'film_grids')->with(['translates' => function ($q) use ($translates){
             $q->where('translates', $translates);
         }])->get();
         $models = $this->repo->index($this->request);
@@ -35,7 +35,7 @@ class KinogitController extends Controller
     public function create()
     {
         $translates = $this->request->translates ?? 'oz';
-        $categories = PersonCategory::where('status', 1)->where('type', 'movie_guide')->with(['translates' => function ($q) use ($translates){
+        $categories = PersonCategory::where('status', 1)->where('type', 'film_grids')->with(['translates' => function ($q) use ($translates){
             $q->where('translates', $translates);
         }])->get();
         return view('admin.kinogit.create', compact('categories'));
@@ -80,7 +80,7 @@ class KinogitController extends Controller
     public function edit($id)
     {
         $translates = $this->request->translates ?? 'oz';
-        $categories = PersonCategory::where('status', 1)->where('type', 'movie_guide')->with(['translates' => function ($q) use ($translates){
+        $categories = PersonCategory::where('status', 1)->where('type', 'film_grids')->with(['translates' => function ($q) use ($translates){
             $q->where('translates', $translates);
         }])->get();
         $model = $this->repo->findById($id, $translates);
