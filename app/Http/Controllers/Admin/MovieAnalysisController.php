@@ -21,7 +21,7 @@ class MovieAnalysisController extends Controller
     public function index()
     {
         $translates = $this->request->translates ?? 'oz';
-        $categories = PersonCategory::where('status', 1)->where('type', 'movie_diagnosis')->with(['translates' => function ($q) use ($translates){
+        $categories = PersonCategory::where('status', 1)->where('type', 'film_diagnostics')->with(['translates' => function ($q) use ($translates){
             $q->where('translates', $translates);
         }])->get();
         $models = $this->repo->index($this->request);
@@ -36,7 +36,7 @@ class MovieAnalysisController extends Controller
     public function create()
     {
         $translates = $this->request->translates ?? 'oz';
-        $categories = PersonCategory::where('status', 1)->where('type', 'movie_diagnosis')->with(['translates' => function ($q) use ($translates){
+        $categories = PersonCategory::where('status', 1)->where('type', 'film_diagnostics')->with(['translates' => function ($q) use ($translates){
             $q->where('translates', $translates);
         }])->get();
         $order = FilmAnalysis::max('order');
@@ -82,7 +82,7 @@ class MovieAnalysisController extends Controller
     public function edit($id)
     {
         $translates = $this->request->translates ?? 'oz';
-        $categories = PersonCategory::where('status', 1)->where('type', 'movie_diagnosis')->with(['translates' => function ($q) use ($translates){
+        $categories = PersonCategory::where('status', 1)->where('type', 'film_diagnostics')->with(['translates' => function ($q) use ($translates){
             $q->where('translates', $translates);
         }])->get();
         $model = $this->repo->findById($id, $translates);
