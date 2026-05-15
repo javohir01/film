@@ -39,15 +39,15 @@
                                 {{--                                        <option value="filmography" {{$model->type == 'filmography'?'selected':''}}>Filmografiya</option>--}}
                                 {{--                                        <option value="books" {{$model->type == 'books'?'selected':''}}>Kitoblar</option>--}}
 
-                                <option value="film_digest" {{$model->type == 'film_digest'? 'selected' : ''}}>
+                                <option value="film_digests" {{$model->type == 'film_digests'? 'selected' : ''}}>
                                     Kinodayjest
                                 </option>
-                                <option value="movie_guide" {{$model->type == 'movie_guide'? 'selected' : ''}}>Kinogid
+                                <option value="film_grids" {{$model->type == 'film_grids'? 'selected' : ''}}>Kinogid
                                 </option>
-                                <option value="cinema_catalog" {{$model->type == 'cinema_catalog'? 'selected' : ''}}>
+                                <option value="film_catalogs" {{$model->type == 'film_catalogs'? 'selected' : ''}}>
                                     Kinokatalog
                                 </option>
-                                <option value="movie_diagnosis" {{$model->type == 'movie_diagnosis'? 'selected' : ''}}>
+                                <option value="film_diagnostics" {{$model->type == 'film_diagnostics'? 'selected' : ''}}>
                                     Kinotashxis
                                 </option>
                                 <option value="books" {{$model->type == 'books'? 'selected' : ''}}>Kinomutolaa</option>
