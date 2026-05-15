@@ -35,13 +35,13 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{route('news.index')}}" class="nav-link {{(request()->is('admin/news*'))?'active':''}}">
-                        <i class="far fa-circle"></i>
-                        <p class="text">Yangiliklar</p>
-                        <span class="badge badge-primary right"></span>
-                    </a>
-                </li>
+{{--                <li class="nav-item">--}}
+{{--                    <a href="{{route('news.index')}}" class="nav-link {{(request()->is('admin/news*'))?'active':''}}">--}}
+{{--                        <i class="far fa-circle"></i>--}}
+{{--                        <p class="text">Yangiliklar</p>--}}
+{{--                        <span class="badge badge-primary right"></span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
 
                 <li class="nav-item">
                     <a href="{{route('film_digest.index')}}"
