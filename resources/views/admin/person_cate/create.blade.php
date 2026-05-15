@@ -28,10 +28,10 @@
                                 <label for="">Menu</label>
                                 <select name="menu" id="menu" class="form-control">
                                     <option value="">---</option>
-                                    <option value="film_digest">Kinodayjest</option>
-                                    <option value="movie_guide">Kinogid</option>
-                                    <option value="cinema_catalog">Kinokatalog</option>
-                                    <option value="movie_diagnosis">Kinotashxis</option>
+                                    <option value="film_digests">Kinodayjest</option>
+                                    <option value="film_grids">Kinogid</option>
+                                    <option value="film_catalogs">Kinokatalog</option>
+                                    <option value="film_diagnostics">Kinotashxis</option>
                                     <option value="books">Kinomutolaa</option>
                                     {{--                                        <option value="news">Yangiliklar</option>--}}
                                     {{--                                        <option value="dictionary">Kino Lug'at</option>--}}
